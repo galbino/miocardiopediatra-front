@@ -9,8 +9,8 @@ const App = () => (
                 <Route path="/" exact={true} component={LoginPage} /> 
                 <Route path="/login" exact={true} component={LoginPage} /> 
                 <Route path="/home" component={HomePage} /> 
-                <Route path="/signup-doctor" component={Signup} /> 
-                <Route path="/signup-pacient" component={SignupPaciente} /> 
+                <Route path="/signup/doctor" component={Signup} /> 
+                <Route path="/signup/pacient" component={SignupPaciente} /> 
             </Switch>
         </BrowserRouter>
     </React.Fragment>

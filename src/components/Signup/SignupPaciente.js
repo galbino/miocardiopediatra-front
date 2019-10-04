@@ -1,6 +1,6 @@
 import React from "react";
-import { Paper, TextField, Grid, Button, InputAdornment, IconButton, MenuItem } from "@material-ui/core";
-import { PostData, GetData } from "../../utils/requests";
+import { Paper, TextField, Grid, Button, InputAdornment, IconButton } from "@material-ui/core";
+import { PostData } from "../../utils/requests";
 import SnackBar from "../../utils/Snackbar";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
@@ -10,36 +10,30 @@ class Signup extends React.Component {
         super(props)
         this.state = {
             nome: "",
-            email: "",
-            especialidadeArray: [{id: "", name: ""}],
-            especialidade: "",
-            dataNascimento: "",
-            crm: "",
-            cpf: "",
-            senha: "",
-            confirmarSenha: "",
-            telefone: "",
+            emailResponsavel: "",
+            cpfResponsavel: "",
+            dataNascimento: "", 
+            altura: "",
+            peso: "",
+            sexo: "", 
             estado: "",
             cidade: "",
             bairro: "",
+            telefonePaciente: "",
+            telefoneResponsavel: "",
+            senha: "",
+            confirmarSenha: "",
+            observacoes: "",
+            isDoctor: false,
+
             showPassword: false,
             showConfirmPassword: false,
-            isDoctor: true,
-
-
+            
             displayMessage: "",
             statusSnack: false,
             variant: "",
 
         }
-    }
-
-    componentDidMount(){
-        GetData("/especialidade").then(response => {
-            if (response.error.length === 0) {
-                this.setState({ especialidadeArray: response.data.especialidade })
-            }
-        }).catch(err => console.log(err))
     }
 
     handleChange = (e) =>  {
@@ -48,20 +42,23 @@ class Signup extends React.Component {
     }
 
     handleConfirmar = () => {
-        const { nome, email, especialidade, dataNascimento, crm, cpf, senha, telefone, estado, cidade, bairro, isDoctor } = this.state;
+        const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, observacoes, isDoctor  } = this.state;
         let data = {
             nome: nome,
-            email: email,
-            especialidade: especialidade,
+            emailResponsavel: emailResponsavel,
+            cpfResponsavel: cpfResponsavel,
             dataNascimento: dataNascimento,
-            crm: crm,
-            cpf: cpf,
-            senha: senha,
-            telefone: telefone,
+            altura: altura,
+            peso: peso,
+            sexo: sexo,
             estado: estado,
             cidade: cidade,
             bairro: bairro,
-            isDoctor: isDoctor
+            telefonePaciente: telefonePaciente,
+            telefoneResponsavel: telefoneResponsavel,
+            senha: senha,
+            observacoes: observacoes,
+            isDoctor: isDoctor,
         }
         this.setState({ statusSnack: true, displayMessage: "Cadastrado com sucessso", variant: "success" })
         PostData("/login", data).then(response => {
@@ -86,7 +83,7 @@ class Signup extends React.Component {
     }
 
     render(){
-        const { nome, email, especialidadeArray, especialidade, dataNascimento, crm, cpf, senha, confirmarSenha, telefone, estado, cidade, bairro, showPassword, showConfirmPassword } = this.state;
+        const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
         return(
             <React.Fragment>
                 
@@ -117,9 +114,9 @@ class Signup extends React.Component {
                                 <Grid item xs>
                                     <TextField 
                                         name="email"
-                                        value={email}
+                                        value={emailResponsavel}
                                         fullWidth
-                                        label="Email"
+                                        label="Email do Responsável"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />
@@ -127,16 +124,15 @@ class Signup extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField                                     
-                                        name="cpf"
-                                        value={cpf}
+                                    <TextField 
+                                        name="cpfResponsavel"
+                                        value={cpfResponsavel}
                                         fullWidth
-                                        label="CPF"
+                                        label="CPF do Responsavel"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />
                                 </Grid>
-                               
                                 <Grid item xs>
                                     <TextField 
                                         name="dataNascimento"
@@ -150,43 +146,35 @@ class Signup extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField 
-                                        select
-                                        name="especialidade"
-                                        value={especialidade}
+                                    <TextField                                     
+                                        name="altura"
+                                        value={altura}
                                         fullWidth
-                                        label="Especialidade"
+                                        label="Altura"
                                         variant="outlined"
-                                        onChange={(e) => this.handleInputChange(e)}
-                                    >   
-                                        {especialidadeArray.map(especialidade => {
-                                            return <MenuItem key={especialidade.id} value={especialidade.id}>{especialidade.name}</MenuItem>
-                                        })}
-                                        
-                                    </TextField>
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
                                 </Grid>
                                 <Grid className="grid-item" item xs>
                                     <TextField 
-                                        name="crm"
-                                        value={crm}
+                                        name="peso"
+                                        value={peso}
                                         fullWidth
-                                        label="CRM"
+                                        label="Peso"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />
                                 </Grid>
-                 
                                 <Grid item xs>
                                     <TextField 
-                                        name="telefone"
-                                        value={telefone}
+                                        name="sexo"
+                                        value={sexo}
                                         fullWidth
-                                        label="Telefone"
+                                        label="Sexo"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />
                                 </Grid>
-                               
                             </Grid>
                             
                             <Grid className="grid-container" container>
@@ -221,7 +209,28 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
-                            
+                            <Grid className="grid-container" container>
+                                <Grid className="grid-item" item xs>
+                                    <TextField 
+                                        name="telefonePaciente"
+                                        value={telefonePaciente}
+                                        fullWidth
+                                        label="Telefone Paciente"
+                                        variant="outlined"
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Grid>
+                                <Grid item xs>
+                                    <TextField 
+                                        name="telefoneResponsavel"
+                                        value={telefoneResponsavel}
+                                        fullWidth
+                                        label="Telefone Responsável"
+                                        variant="outlined"
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Grid>
+                            </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
                                     <TextField                                     
@@ -264,7 +273,22 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
+                            <Grid className="grid-container" container>
+                                <Grid item xs>
+                                    <TextField 
+                                        multiline
+                                        rows={5}
+                                        name="observacoes"
+                                        value={observacoes}
+                                        fullWidth
+                                        label="Observações"
+                                        variant="outlined"
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Grid>
+                            </Grid>
                             
+                           
                             <Button style={{float: "right"}} variant="contained" color="primary" onClick={() => this.handleConfirmar()}>Confirmar</Button>
                         </form>
                     </Paper>

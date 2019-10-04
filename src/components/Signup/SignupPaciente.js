@@ -1,9 +1,9 @@
 import React from "react";
-import { Paper, TextField, Grid, Button, InputAdornment, IconButton } from "@material-ui/core";
-import { PostData } from "../../utils/requests";
+import { Paper, TextField, Grid, Button, InputAdornment, IconButton, MenuItem, Menu } from "@material-ui/core";
+import { PostData, makeCancelable, GetData } from "../../utils/requests";
 import SnackBar from "../../utils/Snackbar";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-
+import InputMask from "react-input-mask";
 
 class Signup extends React.Component {
     constructor(props){
@@ -15,8 +15,38 @@ class Signup extends React.Component {
             dataNascimento: "", 
             altura: "",
             peso: "",
-            sexo: "", 
-            estado: "",
+            sexo: "Outro", 
+            sexoArray: ["Outro", "Masculino", "Feminino"],
+            estadoArray: [
+                'AC' , 
+                'AL' , 
+                'AP' , 
+                'AM' , 
+                'BA' , 
+                'CE' , 
+                'DF' ,
+                'ES' , 
+                'GO' ,
+                'MA' ,
+                'MT' , 
+                'MS' , 
+                'MG' , 
+                'PA' ,
+                'PB' , 
+                'PR' , 
+                'PE' , 
+                'PI' , 
+                'RJ' , 
+                'RN' , 
+                'RS' , 
+                'RO' , 
+                'RR' , 
+                'SC' , 
+                'SP' , 
+                'SE' , 
+                'TO' , 
+            ],
+            estado: "AC",
             cidade: "",
             bairro: "",
             telefonePaciente: "",
@@ -24,10 +54,27 @@ class Signup extends React.Component {
             senha: "",
             confirmarSenha: "",
             observacoes: "",
-            isDoctor: false,
-
+            isDoctor: 0,
             showPassword: false,
             showConfirmPassword: false,
+
+
+            touched: {
+                nome: false,
+                emailResponsavel: false,
+                cpfResponsavel: false,
+                dataNascimento: false,
+                altura: false,
+                peso: false,
+                sexo: false,
+                estado: false,
+                cidade: false,
+                bairro: false,
+                telefonePaciente: false,
+                telefoneResponsavel: false,
+                senha: false,
+                confirmarSenha: false,
+            },
             
             displayMessage: "",
             statusSnack: false,
@@ -36,13 +83,32 @@ class Signup extends React.Component {
         }
     }
 
+
+
     handleChange = (e) =>  {
         let input = e.target.name
         this.setState({ [input]: e.target.value })
     }
 
-    handleConfirmar = () => {
-        const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, observacoes, isDoctor  } = this.state;
+    handleInputChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    FormataStringData = (data) => {
+        var dia  = data.split("/")[0];
+        var mes  = data.split("/")[1];
+        var ano  = data.split("/")[2];
+        return ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+    }
+
+    handleConfirmar = (e) => {
+        console.log(this.state)
+        e.preventDefault();
+        let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
+        // if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
+        //     return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
+        // } 
+        dataNascimento = this.FormataStringData(dataNascimento);
         let data = {
             nome: nome,
             emailResponsavel: emailResponsavel,
@@ -57,15 +123,16 @@ class Signup extends React.Component {
             telefonePaciente: telefonePaciente,
             telefoneResponsavel: telefoneResponsavel,
             senha: senha,
-            observacoes: observacoes,
             isDoctor: isDoctor,
+            observacoes: observacoes,
         }
-        this.setState({ statusSnack: true, displayMessage: "Cadastrado com sucessso", variant: "success" })
-        PostData("/login", data).then(response => {
-            if (response.error.length === 0) {
-                alert("sucesso")
+        
+        
+        PostData("/signup", data).then(response => {
+            if (response.errors.length === 0) {
+                this.setState({ statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
             } else {
-                alert("rip")
+                this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
             }
         }).catch(err => console.log(err))
     }
@@ -82,8 +149,58 @@ class Signup extends React.Component {
         this.setState({ statusSnack: false })
     }
 
+    handleBlur = field => () => {
+        let touched = this.state.touched;
+        touched[field] = true
+        this.setState({ touched: touched })
+    }
+
+    validateFields = (data) => {
+        return {
+            nome: data.nome === "" || data.nome.length < 5,
+            emailResponsavel: data.emailResponsavel === "" || !data.emailResponsavel.includes("@") || !data.emailResponsavel.includes("."),
+            cpfResponsavel: data.cpfResponsavel === "" || data.cpfResponsavel.includes("_"),
+            dataNascimento: data.dataNascimento === "" || data.dataNascimento.includes("_"),
+            altura: data.altura === "",
+            peso: data.peso === "",
+            sexo: data.sexo === "",
+            confirmarSenha: data.confirmarSenha === "" || data.confirmarSenha !== data.senha,  
+            estado: data.estado === "",
+            cidade: data.cidade === "" || data.cidade.length < 4,
+            bairro: data.bairro === "" || data.bairro.length < 4,
+            telefonePaciente: data.telefonePaciente === "" || data.telefonePaciente.includes("_"),
+            telefoneResponsavel: data.telefoneResponsavel === "" || data.telefoneResponsavel.includes("_"),
+            senha: data.senha === "" || data.senha.length < 4,  
+            confirmarSenha: data.confirmarSenha === "" || data.confirmarSenha !== data.senha,  
+        }
+     }
+
     render(){
         const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
+        let data = {
+            nome: nome,
+            emailResponsavel: emailResponsavel,
+            cpfResponsavel: cpfResponsavel,
+            dataNascimento: dataNascimento,
+            altura: altura,
+            peso: peso,
+            sexo: sexo,
+            estado: estado,
+            cidade: cidade,
+            bairro: bairro,
+            telefonePaciente: telefonePaciente,
+            telefoneResponsavel: telefoneResponsavel,
+            senha: senha,
+            confirmarSenha: confirmarSenha,
+        }
+
+        const errors = this.validateFields(data);
+        const shouldMarkError = field => {
+            const hasError = errors[field];      
+            const shouldShow = this.state.touched[field];
+            return hasError ? shouldShow : false;
+        };
+
         return(
             <React.Fragment>
                 
@@ -101,7 +218,10 @@ class Signup extends React.Component {
                             <Grid className="grid-container" container>
                                 <Grid item xs>
                                     <TextField 
+                                        onBlur={this.handleBlur("nome")}
+                                        error={shouldMarkError("nome")}
                                         name="nome"
+                                        type="text"
                                         value={nome}
                                         fullWidth
                                         label="Nome Completo"
@@ -113,7 +233,9 @@ class Signup extends React.Component {
                             <Grid className="grid-container" container>
                                 <Grid item xs>
                                     <TextField 
-                                        name="email"
+                                        onBlur={this.handleBlur("emailResponsavel")}
+                                        error={shouldMarkError("emailResponsavel")}
+                                        name="emailResponsavel"
                                         value={emailResponsavel}
                                         fullWidth
                                         label="Email do Responsável"
@@ -124,72 +246,108 @@ class Signup extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField 
-                                        name="cpfResponsavel"
-                                        value={cpfResponsavel}
-                                        fullWidth
-                                        label="CPF do Responsavel"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask mask="999.999.999-99" value={cpfResponsavel} onChange={(e) => this.handleChange(e)} onBlur={this.handleBlur("cpfResponsavel")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                error={shouldMarkError("cpfResponsavel")}
+                                                label="CPF do Responável"
+                                                name="cpfResponsavel"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                 <Grid item xs>
-                                    <TextField 
-                                        name="dataNascimento"
-                                        value={dataNascimento}
-                                        fullWidth
-                                        label="Data de Nascimento"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask mask="99/99/9999" value={dataNascimento} onChange={(e) => this.handleChange(e)}  onBlur={this.handleBlur("dataNascimento")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                label="Data de Nascimento"
+                                                error={shouldMarkError("dataNascimento")}
+                                                name="dataNascimento"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField                                     
-                                        name="altura"
-                                        value={altura}
-                                        fullWidth
-                                        label="Altura"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask mask="9,99" value={altura} onChange={(e) => this.handleChange(e)}  onBlur={this.handleBlur("altura")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                label="Altura"
+                                                error={shouldMarkError("altura")}
+                                                name="altura"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                 <Grid className="grid-item" item xs>
-                                    <TextField 
-                                        name="peso"
-                                        value={peso}
-                                        fullWidth
-                                        label="Peso"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask mask="99,99" value={peso} onChange={(e) => this.handleChange(e)}  onBlur={this.handleBlur("peso")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                label="Peso"
+                                                error={shouldMarkError("peso")}
+                                                name="peso"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                 <Grid item xs>
                                     <TextField 
+                                        select
+                                        onBlur={this.handleBlur("sexo")}
+                                        error={shouldMarkError("sexo")}
                                         name="sexo"
                                         value={sexo}
                                         fullWidth
                                         label="Sexo"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
-                                    />
+                                    >
+                                        {this.state.sexoArray.map(sexo => {
+                                            return <MenuItem key={sexo} value={sexo}>{sexo}</MenuItem>
+                                        })}
+                                    </TextField>
                                 </Grid>
                             </Grid>
                             
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField                                     
+                                    <TextField                       
+                                        select
+                                        onBlur={this.handleBlur("estado")}
+                                        error={shouldMarkError("estado")}              
                                         name="estado"
                                         value={estado}
                                         fullWidth
                                         label="Estado"
                                         variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                        onChange={(e) => this.handleInputChange(e)}
+                                    >
+                                        {this.state.estadoArray.map(uf => {
+                                            return <MenuItem key={uf} value={uf}>{uf}</MenuItem>
+                                        })}
+                                    </TextField>
                                 </Grid>
                                 <Grid className="grid-item"  item xs>
-                                    <TextField                                     
+                                    <TextField                        
+                                        onBlur={this.handleBlur("cidade")}
+                                        error={shouldMarkError("cidade")}             
                                         name="cidade"
                                         value={cidade}
                                         fullWidth
@@ -200,6 +358,8 @@ class Signup extends React.Component {
                                 </Grid>
                                 <Grid item xs>
                                     <TextField                                     
+                                        onBlur={this.handleBlur("bairro")}
+                                        error={shouldMarkError("bairro")}
                                         name="bairro"
                                         value={bairro}
                                         fullWidth
@@ -211,29 +371,41 @@ class Signup extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <TextField 
-                                        name="telefonePaciente"
-                                        value={telefonePaciente}
-                                        fullWidth
-                                        label="Telefone Paciente"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask  type="tel" mask="(99) 99999-9999" value={telefonePaciente} onChange={(e) => this.handleChange(e)} onBlur={this.handleBlur("telefonePaciente")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                label="Telefone do Paciente"
+                                                error={shouldMarkError("telefonePaciente")}
+                                                name="telefonePaciente"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                 <Grid item xs>
-                                    <TextField 
-                                        name="telefoneResponsavel"
-                                        value={telefoneResponsavel}
-                                        fullWidth
-                                        label="Telefone Responsável"
-                                        variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    />
+                                    <InputMask  type="tel" mask="(99) 99999-9999" value={telefoneResponsavel} onChange={(e) => this.handleChange(e)} onBlur={this.handleBlur("telefoneResponsavel")}> 
+                                        {inputProps => (
+                                            <TextField
+                                                {...inputProps}       
+                                                label="Telefone do Responsável"
+                                                error={shouldMarkError("telefoneResponsavel")}
+                                                name="telefoneResponsavel"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
                                     <TextField                                     
+                                        onBlur={this.handleBlur("senha")}
+                                        error={shouldMarkError("senha")}
                                         name="senha"
                                         value={senha}
                                         fullWidth
@@ -254,6 +426,8 @@ class Signup extends React.Component {
                                 </Grid>
                                 <Grid item xs>
                                     <TextField 
+                                        onBlur={this.handleBlur("confirmarSenha")}
+                                        error={shouldMarkError("confirmarSenha")}
                                         name="confirmarSenha"
                                         value={confirmarSenha}
                                         fullWidth
@@ -289,7 +463,7 @@ class Signup extends React.Component {
                             </Grid>
                             
                            
-                            <Button style={{float: "right"}} variant="contained" color="primary" onClick={() => this.handleConfirmar()}>Confirmar</Button>
+                            <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
                     </Paper>
                 </div>

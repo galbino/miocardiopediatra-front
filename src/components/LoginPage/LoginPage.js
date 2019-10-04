@@ -51,11 +51,11 @@ class LoginPage extends React.Component {
     }
 
     handleRedirectDoctor = () => {
-        this.setState({ redirect: "signup-doctor" })
+        this.setState({ redirect: "signup/doctor" })
     }
     
     handleRedirectPaciente = () => {
-        this.setState({ redirect: "signup-pacient" })
+        this.setState({ redirect: "signup/pacient" })
     }
 
     render() {

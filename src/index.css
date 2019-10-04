@@ -1,6 +1,6 @@
 body {
-  background: rgb(226,194,200);
-background: linear-gradient(90deg, rgba(226,194,200,1) 0%, rgba(241,219,222,1) 100%);
+  background: #e7e7e7;
+  
 }
 
 a {
@@ -15,20 +15,29 @@ a {
 
 .modal{
   width: 60%;
-  margin-top: 10%;
+  margin-top: 15%;
   margin-left: 20%;
 }
 
 .modal .modal-paper {
-  height: 60%;
-  padding: 5em;
+  height: 40%;
+  padding: 1.5em;
   display: flex;
 }
 
 .modal .modal-paper .modal-paper-item {
   height: 100%;
-  width: 100%;
+  width: 50%;
   margin-right: 16px;
+}
+
+.modal .modal-paper .modal-paper-item:last-child {
+  margin-right: 0;
+}
+
+.modal-paper-item:hover {
+  cursor: pointer;
+  background-color: #e6e6e6;
 }
 
 .paper {
@@ -42,6 +51,31 @@ a {
 }
 .grid-item {
   padding-right: 16px;
+}
+
+.image-box {
+  border: 1px solid #ccc;
+  background: #eee;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 2;
+  position: relative;
+  cursor: pointer;
+}
+
+.image-box-modal {
+  position: relative;
+  align-content: center;
+  padding: 3.5em;
+  cursor: pointer;
+  border-radius: 4px;
+  height: auto;
+  
+}
+
+.image-box-modal:hover {
+  
+  cursor: pointer;
 }
 
 
@@ -84,7 +118,7 @@ a {
       flex-direction: column;
       left: 20%;
       width: 55%;
-      margin-top: 30%;
+      margin-top: 25%;
   }
   .senha, .email {
       margin-bottom: 0.5em !important;
@@ -104,6 +138,24 @@ a {
   .senha, .email {
       margin-bottom: 0.5em !important;
   }
+  
+  .modal{
+    width: 55%;
+    margin-top: 15%;
+    margin-left: 20%;
+  }
+
+  .modal .modal-paper {
+    height: 35%;
+    padding: 2em;
+    display: flex;
+  }
+
+  .modal .modal-paper .modal-paper-item {
+    height: 100%;
+    width: 100%;
+    margin-right: 16px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -121,7 +173,7 @@ a {
   }
 
   .signup-box {
-      margin: 10% 5%;
+      margin: 7% 20%;
       
   }
 

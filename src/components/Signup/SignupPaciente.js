@@ -4,6 +4,8 @@ import { PostData, makeCancelable, GetData } from "../../utils/requests";
 import SnackBar from "../../utils/Snackbar";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import InputMask from "react-input-mask";
+import Logo from "../../components/logo-miocardio.png";
+import { Redirect } from 'react-router'
 
 class Signup extends React.Component {
     constructor(props){
@@ -79,11 +81,13 @@ class Signup extends React.Component {
             displayMessage: "",
             statusSnack: false,
             variant: "",
-
+            redirect: "",
         }
     }
 
-
+    handleRedirect = () => {
+        this.setState({ redirect: "/login" })
+    }
 
     handleChange = (e) =>  {
         let input = e.target.name
@@ -130,7 +134,7 @@ class Signup extends React.Component {
         
         PostData("/signup", data).then(response => {
             if (response.errors.length === 0) {
-                this.setState({ statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
+                this.setState({  redirect: "/login", statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
             } else {
                 this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
             }
@@ -176,6 +180,11 @@ class Signup extends React.Component {
      }
 
     render(){
+        if (this.state.redirect !== ""){
+            return (
+                <Redirect to={this.state.redirect} />
+            );    
+        }
         const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
         let data = {
             nome: nome,
@@ -213,6 +222,9 @@ class Signup extends React.Component {
 
                 
                 <div className="signup-box">
+                    <div className="image-box" onClick={this.handleRedirect}>
+                        <img style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
+                    </div>
                     <Paper className="paper" elevation={3}>
                         <form>
                             <Grid className="grid-container" container>

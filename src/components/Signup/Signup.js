@@ -4,7 +4,8 @@ import { PostData, makeCancelable, GetData } from "../../utils/requests";
 import SnackBar from "../../utils/Snackbar";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import InputMask from "react-input-mask";
-
+import { Redirect } from 'react-router'
+import Logo from "../../components/logo-miocardio.png";
 
 class Signup extends React.Component {
     constructor(props){
@@ -55,7 +56,7 @@ class Signup extends React.Component {
                 'SE' , 
                 'TO' , 
             ],
-
+            redirect: "",
             touched: {
                 nome: false,
                 email: false,
@@ -142,7 +143,7 @@ class Signup extends React.Component {
         
         PostData("/signup", data).then(response => {
             if (response.errors.length === 0) {
-                this.setState({ statusSnack: true, displayMessage: "Cadastrado com sucesso.", variant: "success" })
+                this.setState({ redirect: "/login", statusSnack: true, displayMessage: "Cadastrado com sucesso.", variant: "success", email: "", cpf: "", dataNascimento: "", telefone: "", especialidade: "", crm: "", estado: "", cidade: "", bairro: "", senha: "", confirmarSenha: ""  })
             } else {
                 this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
             }
@@ -169,7 +170,16 @@ class Signup extends React.Component {
         this.setState({ statusSnack: false })
     }
 
+    handleRedirect = () => {
+        this.setState({ redirect: "/login" })
+    }
+    
     render(){
+        if (this.state.redirect !== ""){
+            return (
+                <Redirect to={this.state.redirect} />
+            );    
+        }
         const { nome, email, especialidadeArray, especialidade, dataNascimento, crm, cpf, senha, confirmarSenha, telefone, estado, cidade, bairro, showPassword, showConfirmPassword } = this.state;
         let data = {
             nome: nome,
@@ -194,7 +204,6 @@ class Signup extends React.Component {
             return hasError ? shouldShow : false;
         };
 
-        console.log(this.state)
         return(
             <React.Fragment>
                 
@@ -207,6 +216,9 @@ class Signup extends React.Component {
 
                 
                 <div className="signup-box">
+                    <div className="image-box" onClick={this.handleRedirect}>
+                        <img style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
+                    </div>
                     <Paper className="paper" elevation={3}>
                         <form>
                             <Grid className="grid-container" container>

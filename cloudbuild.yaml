@@ -6,6 +6,6 @@ steps:
   args: ['push', 'gcr.io/$PROJECT_ID/miocardio-pediatra-front']
   # Deploy container image to Cloud Run
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'miocardio-pediatra-front', '--image', 'gcr.io/$PROJECT_ID/miocardio-pediatra-front', '--region', 'us-east1','--platform', 'managed', '--quiet']
+  args: ['beta', 'run', 'deploy', 'miocardio-pediatra-front', '--image', 'gcr.io/$PROJECT_ID/miocardio-pediatra-front', '--region', 'us-east1','--platform', 'managed', '--quiet', '--allow-unauthenticated']
 images:
 - gcr.io/$PROJECT_ID/miocardio-pediatra-front

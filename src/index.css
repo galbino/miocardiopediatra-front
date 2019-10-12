@@ -73,13 +73,15 @@ a {
   
 }
 
-.image-box-modal:hover {
-  
+.image-box-modal:hover {  
   cursor: pointer;
 }
 
 
 @media (max-width: 600px) {
+  .signup-box {
+    margin: 3em 1em 1em 1em;
+  }
   .login-box {
       padding: 1em;
       position: relative;
@@ -92,9 +94,43 @@ a {
   .senha, .email {
       margin-bottom: 0.5em !important;
   }
+  .modal {
+    position: relative;
+    margin: auto;
+    width: 90%;
+    height: 80%;
+    overflow-y: scroll;
+  }
+
+  .image-box-modal {
+    padding: 0;
+  }
+  .modal-paper-item h5 {
+    font-size: 18px;
+  }
+  .image-box-modal img {
+    width: 50px;
+    height: 80px;
+    padding: 2em;
+  }
+  
+  .modal-paper {
+    display: flex;
+    flex-direction: column;
+    
+    height: fit-content !important;
+  }
+
+  .modal-paper-item {
+    margin-bottom: 1em;
+    width: 100% !important;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 768px) {
+  .signup-box {
+    margin: 3em 1em 1em 1em;
+  }
   .login-box {
       padding: 1em;
       position: relative;
@@ -107,10 +143,44 @@ a {
   .senha, .email {
       margin-bottom: 0.5em !important;
   }
+  .modal {
+    position: relative;
+    margin: auto;
+    width: 90%;
+    height: 80%;
+    overflow-y: scroll;
+  }
+
+  .image-box-modal {
+    padding: 0;
+  }
+  .modal-paper-item h5 {
+    font-size: 18px;
+  }
+  .image-box-modal img {
+    width: 50px;
+    height: 80px;
+    padding: 2em;
+  }
+  
+  .modal-paper {
+    display: flex;
+    flex-direction: column;
+    
+    height: fit-content !important;
+  }
+
+  .modal-paper-item {
+    margin-bottom: 1em;
+    width: 100% !important;
+  }
 }
 
 
 @media (min-width: 768px) and (max-width: 992px) {
+  .signup-box {
+    margin: 3em 1em 1em 1em;
+  }
   .login-box {
       padding: 1em;
       position: relative;
@@ -123,9 +193,26 @@ a {
   .senha, .email {
       margin-bottom: 0.5em !important;
   }
+  .modal-paper-item h5 {
+    font-size: 18px;
+  }
+  .image-box-modal img {
+    width: 50px;
+    height: 80px;
+    
+  }
+  .modal-paper {  
+    height: fit-content !important;
+    width: fit-content;
+  }
+  
+  
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
+  .signup-box {
+    margin: 3em 1em 1em 1em;
+  }
   .login-box {
       padding: 1em;
       position: relative;
@@ -155,6 +242,9 @@ a {
     height: 100%;
     width: 100%;
     margin-right: 16px;
+  }
+  .modal-paper-item h5 {
+    font-size: 20px;
   }
 }
 

@@ -78,7 +78,7 @@ class LoginPage extends React.Component {
         }
         return(
             <React.Fragment>
-                <Modal className="modal" open={openModal} onClose={this.handleModalClose} closeAfterTransition>
+                <Modal className="modal" open={openModal} onClose={this.handleModalClose} closeAfterTransition >
                     <Paper className="modal-paper">
                         
                        <Paper name="doctor" className="modal-paper-item" elevation={7} onClick={this.handleRedirectDoctor}>

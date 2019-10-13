@@ -73,7 +73,7 @@ class LoginPage extends React.Component {
         const { openModal, } = this.state;
         if (this.state.redirect !== ""){
             return (
-                <Redirect to={this.state.redirect} />
+                <Redirect push to={this.state.redirect} />
             );    
         }
         return(

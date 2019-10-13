@@ -41,17 +41,6 @@ class Controller extends React.Component {
             );    
         }
 
-        // const redictMenu = (page) => {
-        //     switch(page){
-        //         case 0:
-        //             return <HomePage/>
-        //         case 1: 
-        //             return <Pacientes/>
-        //         default:
-        //             return <HomePage/>
-        //     }
-        // }
-
         return(
            <React.Fragment>
                <Menu 

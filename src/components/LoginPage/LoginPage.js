@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Paper, Button, TextField, Grid, Typography } from '@material-ui/core';
+import { Modal, Paper, Button, TextField, Grid, Typography, InputAdornment, IconButton } from '@material-ui/core';
 import { Redirect } from 'react-router'
 import { PostData } from '../../utils/requests';
 import Auth from '../../utils/Auth';
@@ -7,6 +7,7 @@ import SnackBar from "../../utils/Snackbar";
 import Logo from "../../components/logo-miocardio.png";
 import Doctor from "../../components/doctor.png";
 import Pacient from "../../components/pacient.png";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 class LoginPage extends React.Component {
     constructor(props){
@@ -19,6 +20,7 @@ class LoginPage extends React.Component {
             displayMessage: "",
             statusSnack: false,
             variant: "",
+            showPassword: false,
         }
     }
 
@@ -48,6 +50,10 @@ class LoginPage extends React.Component {
         this.setState({
             [name]: value
         })
+    }
+
+    handleShowPassword = () => {
+        this.setState({ showPassword: !this.state.showPassword })
     }
 
     validateForm = () => {
@@ -87,14 +93,14 @@ class LoginPage extends React.Component {
                 <Modal className="modal" open={openModal} onClose={this.handleModalClose} closeAfterTransition >
                     <Paper className="modal-paper">
                         
-                       <Paper name="doctor" className="modal-paper-item" elevation={7} onClick={this.handleRedirectDoctor}>
+                       <Paper name="doctor" className="modal-paper-item" elevation={5} onClick={this.handleRedirectDoctor}>
                             <Typography style={{padding: "0.5em"}} variant="h5" align="center">Profissional da Saúde</Typography>
                             <div className="image-box-modal" onClick={this.handleRedirectDoctor}>
                             
                                 <img style={{width: "95px", display: "block", margin: "auto"}} src={Doctor}></img>
                             </div>
                        </Paper>
-                       <Paper id="paciente" className="modal-paper-item" elevation={7} onClick={this.handleRedirectPaciente}>
+                       <Paper id="paciente" className="modal-paper-item" elevation={5} onClick={this.handleRedirectPaciente}>
                             <Typography  style={{padding: "0.5em"}}  variant="h5" align="center">Paciente</Typography>
                             <div className="image-box-modal" onClick={this.handleRedirectPacient}>
                                 <img style={{width: "95px", display: "block", margin: "auto"}} src={Pacient}></img>
@@ -133,9 +139,18 @@ class LoginPage extends React.Component {
                             fullWidth
                             label="Senha"
                             variant="outlined"
-                            type="password"
+                            type={this.state.showPassword ? "text" : "password"}
                             onChange={this.handleChange}
                             onKeyDown={(e) => this.handleKeyPress(e)}
+                            InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton onClick={this.handleShowPassword}>
+                                      {this.state.showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                            }}
                         />
                         <Typography 
                             gutterBottom

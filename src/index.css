@@ -225,27 +225,21 @@ a {
   .senha, .email {
       margin-bottom: 0.5em !important;
   }
-  
-  .modal{
-    width: 55%;
-    margin-top: 15%;
-    margin-left: 20%;
+  .modal-paper-item{
+    height: fit-content;
   }
-
-  .modal .modal-paper {
-    height: 35%;
+  .image-box-modal {
     padding: 2em;
-    display: flex;
-  }
-
-  .modal .modal-paper .modal-paper-item {
-    height: 100%;
-    width: 100%;
-    margin-right: 16px;
   }
   .modal-paper-item h5 {
-    font-size: 20px;
+    font-size: 18px;
   }
+  .image-box-modal img {
+    width: 50px;
+    height: 80px;
+  }
+
+ 
 }
 
 @media (min-width: 1200px) {
@@ -263,9 +257,18 @@ a {
   }
 
   .signup-box {
-      margin: 7% 20%;
-      
+      margin: 7% 20%;   
   }
+  .image-box-modal {
+    padding: 1.5em;
+  }
+  .image-box-modal img {
+    width: 50px;
+    height: 80px;
+  }
+ 
+  
+
 
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Paper, Button, TextField, Grid, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router'
 import { PostData } from '../../utils/requests';
+import Auth from '../../utils/Auth';
 import SnackBar from "../../utils/Snackbar";
 import Logo from "../../components/logo-miocardio.png";
 import Doctor from "../../components/doctor.png";
@@ -21,6 +22,10 @@ class LoginPage extends React.Component {
         }
     }
 
+    handleKeyPress = (e) => {
+        if (e.keyCode === 13) return this.handleLogin()
+    }
+
     handleLogin = () => {
         let data = {
             email: this.state.email,
@@ -28,6 +33,7 @@ class LoginPage extends React.Component {
         }
         PostData("/login", data).then(response => {
             if (response.errors.length === 0) {
+                Auth.authenticateUser(response.data.id)
                 this.setState({ redirect: "/home" })
             } else {
                 this.setState({ displayMessage: "Erro ao conectar, tente novamente", variant: "warning", statusSnack: true })
@@ -129,6 +135,7 @@ class LoginPage extends React.Component {
                             variant="outlined"
                             type="password"
                             onChange={this.handleChange}
+                            onKeyDown={(e) => this.handleKeyPress(e)}
                         />
                         <Typography 
                             gutterBottom

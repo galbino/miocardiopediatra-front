@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PersistentDrawerLeft() {
+export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   
   const [open, setOpen] = React.useState(false);
@@ -71,7 +71,10 @@ export default function PersistentDrawerLeft() {
       setOpen(!open)
   }
 
- 
+  const handleChangePage = (page) => {
+      props.handleChangePage(page);
+      handleMenu();
+  }
 
   return (
     <div className={classes.root}>
@@ -92,7 +95,7 @@ export default function PersistentDrawerLeft() {
             <MdMenu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Miocardio Pediatria
+              {props.title}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -112,27 +115,27 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-                        <ListItem button>
-                            <ListItemIcon><MdHome size={30} /></ListItemIcon>
-                            <ListItemText primary={"Homepage"}></ListItemText>
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon><MdPeople size={30} /></ListItemIcon>
-                            <ListItemText primary={"Pacientes"}></ListItemText>
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon><MdPerson size={30} /></ListItemIcon>
-                            <ListItemText primary={"Perfil"}></ListItemText>
-                        </ListItem>
-                       
-                    </List>
-                    <Divider />
-                    <List>
-                        <ListItem button>
-                            <ListItemIcon><MdExitToApp size={30} /></ListItemIcon>
-                            <ListItemText primary={"Sair"}></ListItemText>
-                        </ListItem>
-                    </List>
+            <ListItem button onClick={() => handleChangePage(0)}>
+                <ListItemIcon><MdHome size={30} /></ListItemIcon>
+                <ListItemText primary={"Homepage"}></ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => handleChangePage(1)}>
+                <ListItemIcon><MdPeople size={30} /></ListItemIcon>
+                <ListItemText primary={"Pacientes"}></ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => handleChangePage(2)}>
+                <ListItemIcon><MdPerson size={30} /></ListItemIcon>
+                <ListItemText primary={"Perfil"}></ListItemText>
+            </ListItem>
+            
+        </List>
+        <Divider />
+        <List>
+            <ListItem button onClick={() => props.handleLogout()}>
+                <ListItemIcon><MdExitToApp size={30} /></ListItemIcon>
+                <ListItemText primary={"Sair"}></ListItemText>
+            </ListItem>
+        </List>
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -140,7 +143,7 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
-        Homepage
+          {props.component}
       </main>
     </div>
   );

@@ -1,8 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline } from "@material-ui/core";
-import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp } from 'react-icons/md';
+import { makeStyles, fade } from '@material-ui/core/styles';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, InputBase } from "@material-ui/core";
+import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend } from 'react-icons/md';
+import { GetData } from '../../utils/requests';
 
 const drawerWidth = 240;
 
@@ -60,12 +61,57 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: 200,
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
 }));
 
 export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   const handleMenu = () => {
       setOpen(!open)
@@ -75,6 +121,23 @@ export default function PersistentDrawerLeft(props) {
       props.handleChangePage(page);
       handleMenu();
   }
+
+  const handleChangeSearch = (event) => {
+    setValue(event.target.value)
+  }
+
+  const handleSubmit = (e, value) => {
+    e.preventDefault();
+    alert("request pacient "+ value)
+  }
+
+  const handleKeyPress = (e, value) => {
+    if (e.keyCode === 13) {
+      return handleSubmit(e, value);
+    }
+  }
+
+ 
 
   return (
     <div className={classes.root}>
@@ -89,14 +152,34 @@ export default function PersistentDrawerLeft(props) {
           <IconButton
             color="inherit"
             aria-label="open drawer"
+            className={classes.menuButton}
             onClick={handleMenu}
             edge="start"
           >
             <MdMenu />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography className={classes.title} variant="h6" noWrap>
               {props.title}
           </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <MdSearch size={20} />
+            </div>
+            <InputBase
+              placeholder="Pesquisar…"
+              value={value}
+              onChange={(e) => handleChangeSearch(e)}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onKeyDown={(e) => handleKeyPress(e, value)}
+            />
+          </div>
+          <IconButton color="inherit" onClick={(e) => handleSubmit(e, value)}>
+            <MdSend />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -107,6 +190,7 @@ export default function PersistentDrawerLeft(props) {
         classes={{
           paper: classes.drawerPaper,
         }}
+        onClose={handleMenu}
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleMenu}>

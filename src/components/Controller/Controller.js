@@ -11,6 +11,7 @@ class Controller extends React.Component {
             isAutenticated: Auth.isUserAuthenticated(),
             page: 0,
             title: "Homepage",
+            component: <HomePage/>
         }
     }
 

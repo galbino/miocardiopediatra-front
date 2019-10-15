@@ -78,6 +78,25 @@ a {
 }
 
 
+@media (min-width: 320px) and (max-width: 600px) {
+  .signup-box {
+    margin: 1em !important;
+  }
+  .login-box {
+      padding: 1em;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      left: 10%;
+      width: 70%;
+      margin-top: 30% !important;
+  }
+  .senha, .email {
+      margin-bottom: 0.5em !important;
+  }
+
+}
+
 @media (max-width: 600px) {
   .signup-box {
     margin: 3em 1em 1em 1em;
@@ -129,7 +148,7 @@ a {
 
 @media (min-width: 600px) and (max-width: 768px) {
   .signup-box {
-    margin: 3em 1em 1em 1em;
+    margin: 2em 1em 1em 1em;
   }
   .login-box {
       padding: 1em;

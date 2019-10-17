@@ -105,6 +105,15 @@ const useStyles = makeStyles(theme => ({
       display: 'block',
     },
   },
+  expand: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.standard,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
 }));
 
 export default function PersistentDrawerLeft(props) {
@@ -137,8 +146,6 @@ export default function PersistentDrawerLeft(props) {
     }
   }
 
- 
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -152,8 +159,12 @@ export default function PersistentDrawerLeft(props) {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            className={classes.menuButton}
+            //className={classes.menuButton}
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: open,
+            })}
             onClick={handleMenu}
+            aria-expanded={open}
             edge="start"
           >
             <MdMenu />

@@ -108,7 +108,7 @@ const useStyles = makeStyles(theme => ({
   expand: {
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.standard,
+      duration: 400,
     }),
   },
   expandOpen: {

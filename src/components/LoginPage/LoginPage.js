@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Paper, Button, TextField, Grid, Typography, InputAdornment, IconButton } from '@material-ui/core';
+import { Modal, Paper, Button, TextField, Grid, Typography, InputAdornment, IconButton, LinearProgress } from '@material-ui/core';
 import { Redirect } from 'react-router'
 import { PostData } from '../../utils/requests';
 import Auth from '../../utils/Auth';
@@ -21,6 +21,7 @@ class LoginPage extends React.Component {
             statusSnack: false,
             variant: "",
             showPassword: false,
+            loading: false,
         }
     }
 
@@ -29,6 +30,7 @@ class LoginPage extends React.Component {
     }
 
     handleLogin = () => {
+        this.setState({ loading: true })
         let data = {
             email: this.state.email,
             password: this.state.senha
@@ -36,11 +38,11 @@ class LoginPage extends React.Component {
         PostData("/login", data).then(response => {
             if (response.errors.length === 0) {
                 Auth.authenticateUser(response.data.id)
-                this.setState({ redirect: "/home" })
+                this.setState({ redirect: "/home", loading: false })
             } else {
-                this.setState({ displayMessage: "Erro ao conectar, tente novamente", variant: "warning", statusSnack: true })
+                this.setState({ displayMessage: "Erro ao conectar, tente novamente", variant: "warning", statusSnack: true, loading: false })
             }
-        }).catch(err => this.setState({ displayMessage: "Ocorreu um erro.", variant: "error", statusSnack: true }))
+        }).catch(err => this.setState({ displayMessage: "Ocorreu um erro.", variant: "error", statusSnack: true, loading: false }))
     }
 
 
@@ -82,7 +84,7 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { openModal, } = this.state;
+        const { openModal, loading } = this.state;
         if (this.state.redirect !== ""){
             return (
                 <Redirect push to={this.state.redirect} />
@@ -108,7 +110,7 @@ class LoginPage extends React.Component {
                        </Paper>
                     </Paper>
                 </Modal>
-
+                {loading && <LinearProgress />}
                <div className="login-box">
                     <div className="image-box" onClick={this.handleRedirect}>
                         <img style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>

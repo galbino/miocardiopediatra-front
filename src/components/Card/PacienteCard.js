@@ -37,13 +37,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PacienteCard() {
+export default function PacienteCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const { nome, idade, estado, cidade } = props;
 
   return (
     <Card className={classes.card}>
@@ -58,8 +60,8 @@ export default function PacienteCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Paciente A"
-        subheader="27 anos"
+        title={nome}
+        subheader={idade + " anos"}
       />
      
       <CardContent>
@@ -84,9 +86,9 @@ export default function PacienteCard() {
         <CardContent>
           <Typography paragraph>Dados:</Typography>
           <Typography paragraph>
-            Nome Completo<br/>
-            Idade<br/>
-            Estado - Cidade<br/>
+            Nome Completo: {nome}<br/>
+            Idade: {idade}<br/>
+            {cidade}, {estado}<br/>
           </Typography>
           <Typography paragraph>
             Algumas outras informações relevantes etc etc etc

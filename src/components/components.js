@@ -7,6 +7,7 @@ import Menu from './Menu/Menu';
 import Pacientes from './Pacientes/Pacientes';
 import PacienteCard from './Card/PacienteCard';
 import Perfil from './Perfil/Perfil';
+import Anamnese from './Anamnese/Anamnese';
 
 export {
     LoginPage,
@@ -18,4 +19,5 @@ export {
     Pacientes, 
     PacienteCard,
     Perfil,
+    Anamnese,
 }

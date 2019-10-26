@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, InputBase } from "@material-ui/core";
-import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend } from 'react-icons/md';
+import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend, MdChromeReaderMode } from 'react-icons/md';
 import { Route } from 'react-router-dom';
 import Auth from '../../utils/Auth';
 
@@ -220,6 +220,14 @@ export default function PersistentDrawerLeft(props) {
                 <ListItem button onClick={() => history.push('/pacientes')}>
                   <ListItemIcon><MdPeople size={30} /></ListItemIcon>
                   <ListItemText primary={"Pacientes"}></ListItemText>
+                </ListItem>
+              )}
+            />
+
+            <Route render={({ history }) => (
+                <ListItem button onClick={() => history.push('/anamnese')}>
+                    <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
+                    <ListItemText primary={"Anamnese"}></ListItemText>
                 </ListItem>
               )}
             />

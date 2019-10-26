@@ -83,6 +83,12 @@ a {
   text-transform: capitalize !important;
 }
 
+.paciente-card {
+  margin: auto;
+  
+  padding: 20px;
+}
+
 @media (min-width: 320px) and (max-width: 600px) {
   .signup-box {
     margin: 1em !important;

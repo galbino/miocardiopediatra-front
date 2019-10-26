@@ -3,7 +3,8 @@ import clsx from 'clsx';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, InputBase } from "@material-ui/core";
 import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend } from 'react-icons/md';
-import { GetData } from '../../utils/requests';
+import { Route } from 'react-router-dom';
+import Auth from '../../utils/Auth';
 
 const drawerWidth = 240;
 
@@ -126,10 +127,7 @@ export default function PersistentDrawerLeft(props) {
       setOpen(!open)
   }
 
-  const handleChangePage = (page) => {
-      props.handleChangePage(page);
-      handleMenu();
-  }
+ 
 
   const handleChangeSearch = (event) => {
     setValue(event.target.value)
@@ -210,18 +208,29 @@ export default function PersistentDrawerLeft(props) {
         </div>
         <Divider />
         <List>
-            <ListItem button onClick={() => handleChangePage(0)}>
-                <ListItemIcon><MdHome size={30} /></ListItemIcon>
-                <ListItemText primary={"Homepage"}></ListItemText>
-            </ListItem>
-            <ListItem button onClick={() => handleChangePage(1)}>
-                <ListItemIcon><MdPeople size={30} /></ListItemIcon>
-                <ListItemText primary={"Pacientes"}></ListItemText>
-            </ListItem>
-            <ListItem button onClick={() => handleChangePage(2)}>
-                <ListItemIcon><MdPerson size={30} /></ListItemIcon>
-                <ListItemText primary={"Perfil"}></ListItemText>
-            </ListItem>
+            <Route render={({ history }) => (
+                <ListItem button onClick={() => history.push('/home')}>
+                  <ListItemIcon><MdHome size={30} /></ListItemIcon>
+                  <ListItemText primary={"Homepage"}></ListItemText>
+                </ListItem>
+              )}
+            />
+            
+            <Route render={({ history }) => (
+                <ListItem button onClick={() => history.push('/pacientes')}>
+                  <ListItemIcon><MdPeople size={30} /></ListItemIcon>
+                  <ListItemText primary={"Pacientes"}></ListItemText>
+                </ListItem>
+              )}
+            />
+           
+           <Route render={({ history }) => (
+                <ListItem button onClick={() => history.push('/perfil')}>
+                    <ListItemIcon><MdPerson size={30} /></ListItemIcon>
+                    <ListItemText primary={"Perfil"}></ListItemText>
+                </ListItem>
+              )}
+            />
             
         </List>
         <Divider />

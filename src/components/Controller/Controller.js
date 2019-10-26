@@ -11,6 +11,7 @@ class Controller extends React.Component {
             isAutenticated: Auth.isUserAuthenticated(),
             page: 0,
             title: "Homepage",
+            redirect: "/home",
             component: <HomePage/>
         }
     }
@@ -18,13 +19,13 @@ class Controller extends React.Component {
     handleChangePage = (page) => {
         switch(page){
             case 0:
-                return this.setState({ page: page, component: < HomePage/>, title: "Homepage" })
+                return this.setState({ page: page, redirect: "/home", component: < HomePage/>, title: "Homepage" })
             case 1:
-                return this.setState({ page: page, component: < Pacientes/>, title: "Listagem de Pacientes" })
+                return this.setState({ page: page, redirect: "/pacientes", component: < Pacientes/>, title: "Listagem de Pacientes" })
             case 2: 
                 return this.setState({ page: page, component: < Perfil/>, title: "Meu Perfil" })
             default:
-                return this.setState({ page: page, component: < HomePage/>, title: "Homepage" })
+                return this.setState({ page: page,  redirect: "/home", component: < HomePage/>, title: "Homepage" })
         }
         
     }
@@ -35,18 +36,19 @@ class Controller extends React.Component {
     }
 
     render(){        
-        const { isAutenticated, component, title } = this.state;
+        const { isAutenticated, component, title, redirect } = this.state;
+        
         if (!isAutenticated || isAutenticated === undefined){
             return (
                 <Redirect push to="/login" />
             );    
         }
-
+    
+        console.log(redirect)
         return(
            <React.Fragment>
-               <Menu 
+                <Menu 
                     component={component} 
-                    handleChangePage={this.handleChangePage}
                     handleLogout={this.handleLogout}
                     title={title}
                 />

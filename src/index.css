@@ -77,6 +77,11 @@ a {
   cursor: pointer;
 }
 
+.btn-add {
+  border-radius: 50px !important;
+  margin-bottom: 1em !important;
+  text-transform: capitalize !important;
+}
 
 @media (min-width: 320px) and (max-width: 600px) {
   .signup-box {

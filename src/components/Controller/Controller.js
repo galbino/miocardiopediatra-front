@@ -1,7 +1,7 @@
 import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
-import { Menu, HomePage, Pacientes } from '../components';
+import { Menu, HomePage, Pacientes, Perfil } from '../components';
 
 
 class Controller extends React.Component {
@@ -22,7 +22,7 @@ class Controller extends React.Component {
             case 1:
                 return this.setState({ page: page, component: < Pacientes/>, title: "Listagem de Pacientes" })
             case 2: 
-                return this.setState({ page: page, component: < Pacientes/>, title: "Meu Perfil" })
+                return this.setState({ page: page, component: < Perfil/>, title: "Meu Perfil" })
             default:
                 return this.setState({ page: page, component: < HomePage/>, title: "Homepage" })
         }

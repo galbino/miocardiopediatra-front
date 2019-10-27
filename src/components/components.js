@@ -5,6 +5,7 @@ import SignupPaciente from './Signup/SignupPaciente';
 import Controller from './Controller/Controller';
 import Menu from './Menu/Menu';
 import Pacientes from './Pacientes/Pacientes';
+import PerfilPaciente from './Pacientes/PerfilPaciente';
 import PacienteCard from './Card/PacienteCard';
 import Perfil from './Perfil/Perfil';
 import Anamnese from './Anamnese/Anamnese';
@@ -16,7 +17,8 @@ export {
     SignupPaciente,
     Controller,
     Menu,
-    Pacientes, 
+    Pacientes,
+    PerfilPaciente,
     PacienteCard,
     Perfil,
     Anamnese,

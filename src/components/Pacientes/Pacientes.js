@@ -1,4 +1,6 @@
 import React from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import { Grid, Button } from '@material-ui/core';
 import { PacienteCard, Menu } from '../components';
 import { MdAdd } from 'react-icons/md';
@@ -9,7 +11,8 @@ class Pacientes extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isAutenticated: Auth.isUserAuthenticated(),
+      //isAutenticated: Auth.isUserAuthenticated(),
+      isAutenticated: true,
     }
   }
 
@@ -23,7 +26,7 @@ class Pacientes extends React.Component {
     if (!isAutenticated || isAutenticated === undefined){
         return (
               <Redirect push to="/login" />
-        );    
+        );
     }
 
     const content = (
@@ -33,25 +36,31 @@ class Pacientes extends React.Component {
             <Button className="btn-add" variant="contained" color="primary" onClick={() => alert("should add pacient")}>
               <MdAdd size={25} /> Novo
             </Button>
-            
+
           </Grid>
         </Grid>
-        <Grid container spacing={1}>          
-          <Grid item xs>
-            <PacienteCard />    
-          </Grid>
-          <Grid item xs>
+        <List>
+          <ListItem>
             <PacienteCard />
-          </Grid>
-          <Grid item xs>
+          </ListItem>
+          <ListItem>
             <PacienteCard />
-          </Grid>
-        </Grid>
+          </ListItem>
+          <ListItem>
+            <PacienteCard />
+          </ListItem>
+          <ListItem>
+            <PacienteCard />
+          </ListItem>
+          <ListItem>
+            <PacienteCard />
+          </ListItem>
+        </List>
       </React.Fragment>
     )
-  
+
     return(
-      <React.Fragment>        
+      <React.Fragment>
         <Menu title="Listagem de Pacientes" component={content} handleLogout={this.handleLogout} />
       </React.Fragment>
     )

@@ -1,13 +1,12 @@
 import React from "react";
-import { Paper, TextField, Grid, Button, InputAdornment, IconButton, MenuItem } from "@material-ui/core";
+import { TextField, Grid, Button, InputAdornment, IconButton, MenuItem, Typography } from "@material-ui/core";
 import { PostData } from "../../utils/requests";
 import SnackBar from "../../utils/Snackbar";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import InputMask from "react-input-mask";
-import Logo from "../../components/logo-miocardio.png";
-import { Redirect } from 'react-router'
 
-class Signup extends React.Component {
+
+export default class NewPaciente extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -85,10 +84,6 @@ class Signup extends React.Component {
         }
     }
 
-    handleRedirect = () => {
-        this.setState({ redirect: "/login" })
-    }
-
     handleChange = (e) =>  {
         let input = e.target.name
         this.setState({ [input]: e.target.value })
@@ -108,10 +103,10 @@ class Signup extends React.Component {
     handleConfirmar = (e) => {
         console.log(this.state)
         e.preventDefault();
-        let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, observacoes, isDoctor  } = this.state;
-        // if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
-        //     return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
-        // } 
+        let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
+        if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
+            return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
+        } 
         dataNascimento = this.FormataStringData(dataNascimento);
         let data = {
             nome: nome,
@@ -167,7 +162,7 @@ class Signup extends React.Component {
             dataNascimento: data.dataNascimento === "" || data.dataNascimento.includes("_"),
             altura: data.altura === "",
             peso: data.peso === "",
-            sexo: data.sexo === "", 
+            sexo: data.sexo === "" || data.sexo === "Outro",
             estado: data.estado === "",
             cidade: data.cidade === "" || data.cidade.length < 4,
             bairro: data.bairro === "" || data.bairro.length < 4,
@@ -179,11 +174,6 @@ class Signup extends React.Component {
      }
 
     render(){
-        if (this.state.redirect !== ""){
-            return (
-                <Redirect to={this.state.redirect} />
-            );    
-        }
         const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
         let data = {
             nome: nome,
@@ -211,22 +201,15 @@ class Signup extends React.Component {
 
         return(
             <React.Fragment>
-                
-                <SnackBar
-                    statusSnack={this.state.statusSnack}
-                    closeSnack={this.handleClose}
-                    displayMessage={this.state.displayMessage}
-                    variant={this.state.variant}
-                />
-
-                
-                <div className="signup-box">
-                    <div className="image-box" onClick={this.handleRedirect}>
-                        <img alt="logo" style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
-                    </div>
-                    <Paper className="paper" elevation={3}>
+                     <SnackBar
+                        statusSnack={this.state.statusSnack}
+                        closeSnack={this.handleClose}
+                        displayMessage={this.state.displayMessage}
+                        variant={this.state.variant}
+                    />
+                        <Typography color="primary" variant="h5" gutterBottom>Cadastrar novo paciente</Typography>
                         <form>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid item xs>
                                     <TextField 
                                         onBlur={this.handleBlur("nome")}
@@ -241,7 +224,7 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid item xs>
                                     <TextField 
                                         onBlur={this.handleBlur("emailResponsavel")}
@@ -255,7 +238,7 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid className="grid-item" item xs>
                                     <InputMask mask="999.999.999-99" value={cpfResponsavel} onChange={(e) => this.handleChange(e)} onBlur={this.handleBlur("cpfResponsavel")}> 
                                         {inputProps => (
@@ -287,7 +270,7 @@ class Signup extends React.Component {
                                     </InputMask>
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid className="grid-item" item xs>
                                     <InputMask mask="9,99" value={altura} onChange={(e) => this.handleChange(e)}  onBlur={this.handleBlur("altura")}> 
                                         {inputProps => (
@@ -337,7 +320,7 @@ class Signup extends React.Component {
                                 </Grid>
                             </Grid>
                             
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid className="grid-item" item xs>
                                     <TextField                       
                                         select
@@ -380,7 +363,7 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid className="grid-item" item xs>
                                     <InputMask  type="tel" mask="(99) 99999-9999" value={telefonePaciente} onChange={(e) => this.handleChange(e)} onBlur={this.handleBlur("telefonePaciente")}> 
                                         {inputProps => (
@@ -412,7 +395,7 @@ class Signup extends React.Component {
                                     </InputMask>
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid className="grid-item" item xs>
                                     <TextField                                     
                                         onBlur={this.handleBlur("senha")}
@@ -458,7 +441,7 @@ class Signup extends React.Component {
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
+                            <Grid className="grid-container" spacing={2} container>
                                 <Grid item xs>
                                     <TextField 
                                         multiline
@@ -474,14 +457,11 @@ class Signup extends React.Component {
                             </Grid>
                             
                            
-                            <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
+                            <Button style={{float: "right", marginTop: "10px"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
-                    </Paper>
-                </div>
             </React.Fragment>
         );
     }
 
 }
 
-export default Signup;

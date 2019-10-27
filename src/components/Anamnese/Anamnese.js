@@ -1,9 +1,11 @@
 import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
-import { Menu, Pacientes } from '../components';
-import { Paper, Grid, RadioGroup, Radio, FormControlLabel, Button, TextField, MenuItem  } from '@material-ui/core';
+import { Menu } from '../components';
+import { Modal, Paper, Grid, RadioGroup, Radio, FormControlLabel, Button, TextField, MenuItem  } from '@material-ui/core';
 import PacienteCard from '../Card/PacienteCard';
+import { MdAdd } from 'react-icons/md';
+import NewPaciente from '../Pacientes/NewPaciente';
 
 class Anamnese extends React.Component {
     constructor(props){
@@ -12,6 +14,7 @@ class Anamnese extends React.Component {
             isAutenticated: Auth.isUserAuthenticated(),
             listPacientes: [],
             paciente: "",
+            openModal: false,
             anamnese: [
                 {
                     question: "Apresenta dispineia aos esforcos?",
@@ -51,14 +54,26 @@ class Anamnese extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
+    handlePacienteChange = () => {
+        this.setState({ paciente: "paciente A" })
+    }
+
     handleAnamneseChange = (event, index) => {
         let array = this.state.anamnese;
         array[index].value = event.target.value
         this.setState({ anamnsese: array })
     }
 
+    handleOpenModalPaciente = () => {
+        this.setState({ openModal: true })
+    }
+
+    handleCloseModalPaciente = () => {
+        this.setState({ openModal: false })
+    }
+
     render(){
-        const { isAutenticated, paciente, anamnese } = this.state;
+        const { isAutenticated, paciente, anamnese, openModal } = this.state;
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
@@ -67,7 +82,19 @@ class Anamnese extends React.Component {
        
         const content = (
             <React.Fragment>
+                <Modal className="modal-paciente" open={openModal} onClose={this.handleCloseModalPaciente} closeAfterTransition >
+                    <Paper className="paper">
+                        <NewPaciente />
+                    </Paper>
+                </Modal>
                 <Paper style={{marginBottom: "1em"}} className="paper">
+                    <Grid container spacing={1}>
+                        <Grid item xs>
+                            <Button className="btn-add" variant="contained" color="primary" onClick={this.handleOpenModalPaciente}>
+                                <MdAdd size={25} /> Novo
+                            </Button>                     
+                        </Grid>
+                    </Grid>
                     <TextField
                         select
                         variant="outlined"
@@ -84,7 +111,6 @@ class Anamnese extends React.Component {
                     <div className="paciente-card">
                         {paciente !== "" && <PacienteCard nome="Paciente A" idade="28" cidade="Rio de Janeiro" estado="RJ" />}
                     </div>
-                    
 
                 </Paper>
                 {anamnese.map((item, index) => {

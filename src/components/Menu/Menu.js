@@ -4,7 +4,6 @@ import { makeStyles, fade } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, InputBase } from "@material-ui/core";
 import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend, MdChromeReaderMode } from 'react-icons/md';
 import { Route } from 'react-router-dom';
-import Auth from '../../utils/Auth';
 
 const drawerWidth = 240;
 
@@ -96,9 +95,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: 200,
     },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     display: 'none',

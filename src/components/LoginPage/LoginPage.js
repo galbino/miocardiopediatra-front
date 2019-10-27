@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Paper, Button, TextField, Grid, Typography, InputAdornment, IconButton, LinearProgress } from '@material-ui/core';
+import { Modal, Paper, Button, TextField, Typography, InputAdornment, IconButton, LinearProgress } from '@material-ui/core';
 import { Redirect } from 'react-router'
 import { PostData } from '../../utils/requests';
 import Auth from '../../utils/Auth';
@@ -99,13 +99,13 @@ class LoginPage extends React.Component {
                             <Typography style={{padding: "0.5em"}} variant="h5" align="center">Profissional da Saúde</Typography>
                             <div className="image-box-modal" onClick={this.handleRedirectDoctor}>
                             
-                                <img style={{width: "95px", display: "block", margin: "auto"}} src={Doctor}></img>
+                                <img alt="doctor" style={{width: "95px", display: "block", margin: "auto"}} src={Doctor}></img>
                             </div>
                        </Paper>
                        <Paper id="paciente" className="modal-paper-item" elevation={5} onClick={this.handleRedirectPaciente}>
                             <Typography  style={{padding: "0.5em"}}  variant="h5" align="center">Paciente</Typography>
                             <div className="image-box-modal" onClick={this.handleRedirectPacient}>
-                                <img style={{width: "95px", display: "block", margin: "auto"}} src={Pacient}></img>
+                                <img alt="paciente" style={{width: "95px", display: "block", margin: "auto"}} src={Pacient}></img>
                             </div>
                        </Paper>
                     </Paper>
@@ -113,7 +113,7 @@ class LoginPage extends React.Component {
                 {loading && <LinearProgress />}
                <div className="login-box">
                     <div className="image-box" onClick={this.handleRedirect}>
-                        <img style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
+                        <img alt="logo" style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
                     </div>
                     <Paper className="paper" elevation={3}>
                         {/* <div className="header">

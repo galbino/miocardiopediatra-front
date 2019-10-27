@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { LoginPage, Controller, HomePage, Signup, SignupPaciente, Pacientes, Perfil, Anamnese } from './components/components';
+import { LoginPage, HomePage, Signup, SignupPaciente, Pacientes, Perfil, Anamnese } from './components/components';
 
 const App = () => (
     <React.Fragment>

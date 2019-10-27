@@ -12,26 +12,31 @@ class Anamnese extends React.Component {
             isAutenticated: Auth.isUserAuthenticated(),
             listPacientes: [],
             paciente: "",
-            anamnsese: [
+            anamnese: [
                 {
                     question: "Apresenta dispineia aos esforcos?",
                     name: "dispineia",
+                    value: ""
                 },
                 {
                     question: "Esta constantemente fadigado?",
                     name: "fadigado",
+                    value: ""
                 },
                 {
                     question: "Possui angina?",
                     name: "angina",
+                    value: ""
                 },
                 {
                     question: "Comentou casos de sincope ou pre-sincope?",
                     name: "sincope",
+                    value: ""
                 },
                 {
                     question: "Experimentou palpitacoes?",
                     name: "palpitacoes",
+                    value: ""
                 }
             ]
         }
@@ -46,12 +51,14 @@ class Anamnese extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
-    handlePacienteChange = (event) => {
-        this.setState({ paciente: event.target.value})
+    handleAnamneseChange = (event, index) => {
+        let array = this.state.anamnese;
+        array[index].value = event.target.value
+        this.setState({ anamnsese: array })
     }
 
     render(){
-        const { isAutenticated, paciente, anamnsese } = this.state;
+        const { isAutenticated, paciente, anamnese } = this.state;
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
@@ -80,13 +87,13 @@ class Anamnese extends React.Component {
                     
 
                 </Paper>
-                {anamnsese.map((item, index) => {
+                {anamnese.map((item, index) => {
                     return (
                         <Paper key={index} style={{marginBottom: "1em"}}  className="paper">
                             <Grid container alignContent="center" alignItems="center" spacing={1}>
                                 <Grid item xs>
                                     {item.question}
-                                    <RadioGroup aria-label="position" name={item.name} value={1} onChange={() => alert("change")} row>
+                                    <RadioGroup aria-label={item.name} name={item.name} value={item.value} onChange={(e) => this.handleAnamneseChange(e, index)} row>
                                         <FormControlLabel
                                             value="yes"
                                             control={<Radio color="primary" />}

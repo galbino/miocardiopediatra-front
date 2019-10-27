@@ -40,6 +40,13 @@ a {
   background-color: #e6e6e6;
 }
 
+.profile-paper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.3em;
+  margin: 5em;
+}
+
 .paper {
   display: flex;
   flex-direction: column;

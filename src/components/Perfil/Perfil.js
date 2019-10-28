@@ -2,8 +2,8 @@ import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
 import { Menu } from '../components';
-import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button } from '@material-ui/core';
-import { MdCameraAlt } from 'react-icons/md';
+import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button, Typography } from '@material-ui/core';
+import { MdCameraAlt, MdLockOutline } from 'react-icons/md';
 import InputMask from 'react-input-mask';
 
 const styles = {
@@ -22,6 +22,14 @@ const styles = {
         right: 0,
         color: "white",
         backgroundColor: "#3f51b5",
+        '&:hover': {
+            backgroundColor: "#002984"
+        }
+    },
+    changePassword: {
+        color: "white",
+        backgroundColor: "#3f51b5",
+        marginLeft: 5,
         '&:hover': {
             backgroundColor: "#002984"
         }
@@ -350,7 +358,14 @@ class Perfil extends React.Component {
                                     />
                                 </Grid>
                             </Grid> */}
-                            
+                            <div style={{display: "flex", alignItems: "center" }}>
+                                <Typography variant="body1">Trocar Senha</Typography>
+                                <IconButton  className={classes.changePassword} color="primary" onClick={() => alert("change password :)")}>
+                                    <MdLockOutline />
+                                </IconButton>
+
+                            </div>
+
                             <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
                     </Paper>

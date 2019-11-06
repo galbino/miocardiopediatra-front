@@ -1,6 +1,7 @@
 import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
+import { Menu } from '../components';
 
 class HomePage extends React.Component {
     constructor(props){
@@ -10,6 +11,11 @@ class HomePage extends React.Component {
         }
     }
 
+    handleLogout = () => {
+        Auth.unauthenticateUser();
+        this.setState({ isAutenticated: false })
+    }
+
     render(){
         const isAutenticated = this.state.isAutenticated;
         if (!isAutenticated || isAutenticated === undefined){
@@ -17,11 +23,16 @@ class HomePage extends React.Component {
                  <Redirect push to="/login" />
             );    
         }
-        return(
-           <React.Fragment>
-               <div>
+       
+        const content = (
+                <div>
                    Sou a HomePage :)
                </div>
+        )
+
+        return(
+           <React.Fragment>
+               <Menu title="Homepage" component={content} handleLogout={this.handleLogout} />
            </React.Fragment>     
         )
     }

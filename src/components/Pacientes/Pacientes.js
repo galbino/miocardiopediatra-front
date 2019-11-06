@@ -1,18 +1,32 @@
 import React from 'react';
-import { Grid, Button, IconButton } from '@material-ui/core';
-import PacienteCard from '../Card/PacienteCard';
+import { Grid, Button } from '@material-ui/core';
+import { PacienteCard, Menu } from '../components';
 import { MdAdd } from 'react-icons/md';
+import Auth from '../../utils/Auth';
+import { Redirect } from 'react-router'
 
 class Pacientes extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      
+      isAutenticated: Auth.isUserAuthenticated(),
     }
   }
 
+  handleLogout = () => {
+    Auth.unauthenticateUser();
+    this.setState({ isAutenticated: false })
+  }
+
   render(){
-    return(
+    const isAutenticated = this.state.isAutenticated;
+    if (!isAutenticated || isAutenticated === undefined){
+        return (
+              <Redirect push to="/login" />
+        );    
+    }
+
+    const content = (
       <React.Fragment>
         <Grid container spacing={1}>
           <Grid item xs>
@@ -22,11 +36,9 @@ class Pacientes extends React.Component {
             
           </Grid>
         </Grid>
-        <Grid container spacing={1}>
-          
+        <Grid container spacing={1}>          
           <Grid item xs>
-            <PacienteCard />
-
+            <PacienteCard />    
           </Grid>
           <Grid item xs>
             <PacienteCard />
@@ -35,6 +47,12 @@ class Pacientes extends React.Component {
             <PacienteCard />
           </Grid>
         </Grid>
+      </React.Fragment>
+    )
+  
+    return(
+      <React.Fragment>        
+        <Menu title="Listagem de Pacientes" component={content} handleLogout={this.handleLogout} />
       </React.Fragment>
     )
   }

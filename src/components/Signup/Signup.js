@@ -217,7 +217,7 @@ class Signup extends React.Component {
                 
                 <div className="signup-box">
                     <div className="image-box" onClick={this.handleRedirect}>
-                        <img style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
+                        <img alt="logo" style={{width: "200px", display: "block", margin: "auto"}} src={Logo}></img>
                     </div>
                     <Paper className="paper" elevation={3}>
                         <form>

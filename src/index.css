@@ -19,6 +19,13 @@ a {
   margin-left: 20%;
 }
 
+.modal-paciente {
+  width: 40%;
+  margin-top: 1%;
+  margin-left: 30%;
+  overflow-y: auto;
+}
+
 .modal .modal-paper {
   height: 40%;
   padding: 1.5em;
@@ -38,6 +45,13 @@ a {
 .modal-paper-item:hover {
   cursor: pointer;
   background-color: #e6e6e6;
+}
+
+.profile-paper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.3em;
+  margin: 5em;
 }
 
 .paper {
@@ -81,6 +95,12 @@ a {
   border-radius: 50px !important;
   margin-bottom: 1em !important;
   text-transform: capitalize !important;
+}
+
+.paciente-card {
+  margin: auto;
+  
+  padding: 20px;
 }
 
 @media (min-width: 320px) and (max-width: 600px) {

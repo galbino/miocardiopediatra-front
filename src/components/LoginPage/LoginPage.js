@@ -37,7 +37,7 @@ class LoginPage extends React.Component {
         }
         PostData("/login", data).then(response => {
             if (response.errors.length === 0) {
-                Auth.authenticateUser(response.data.id)
+                Auth.authenticateUser(response.data.token.acces_token)
                 this.setState({ redirect: "/home", loading: false })
             } else {
                 this.setState({ displayMessage: "Erro ao conectar, tente novamente", variant: "warning", statusSnack: true, loading: false })

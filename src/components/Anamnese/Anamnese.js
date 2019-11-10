@@ -2,19 +2,23 @@ import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
 import { Menu } from '../components';
-import { Modal, Paper, Grid, RadioGroup, Radio, FormControlLabel, Button, TextField, MenuItem  } from '@material-ui/core';
+import { Modal, Paper, Grid, RadioGroup, Radio, FormControlLabel, Button, TextField, MenuItem, Typography  } from '@material-ui/core';
 import PacienteCard from '../Card/PacienteCard';
 import { MdAdd } from 'react-icons/md';
 import NewPaciente from '../Pacientes/NewPaciente';
+import { default as ReactSelect } from 'react-select';
+import { PostData } from '../../utils/requests';
 
 class Anamnese extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
-            listPacientes: [],
-            paciente: "",
+            listPacientes: [{ id: "",  label: "vv", value: "vv" }, { id: "", label:"gugu", value: "gugu"}],
+            paciente: null,
+            isLoading: true,
             openModal: false,
+            redirect: false,
             anamnese: [
                 {
                     question: "Apresenta dispineia aos esforcos?",
@@ -41,12 +45,15 @@ class Anamnese extends React.Component {
                     name: "palpitacoes",
                     value: ""
                 }
-            ]
+            ],
+        
         }
     }
 
     componentDidMount(){
-        // request listagem com dados dos pacientes
+        // request listagem dos pacientes
+        // set isLoading
+        this.setState({ isLoading: false })
     }
 
     handleLogout = () => {
@@ -54,14 +61,33 @@ class Anamnese extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
-    handlePacienteChange = () => {
-        this.setState({ paciente: "paciente A" })
+    handlePacienteChange = (e) => {
+        this.setState({ paciente: e })
     }
 
     handleAnamneseChange = (event, index) => {
         let array = this.state.anamnese;
         array[index].value = event.target.value
-        this.setState({ anamnsese: array })
+        this.setState({ anamnese: array })
+    }
+
+    handleNewUser = (data) => {
+        let array = this.state.listPacientes;
+        let info = { id: data.id, value: data.name, label: data.name }
+        array.unshift(info);
+        this.setState({ listPacientes: array })
+    }
+
+    handleContinueAnamnese = () => {
+        let data = {};
+        PostData("url/" + this.state.paciente.id , data).then(response => {
+            if (response.errors.length === 0) {
+                this.setState({ redirect: "listagemAnamnese" + response.data.id })
+            } else {
+                
+            }
+        });
+        
     }
 
     handleOpenModalPaciente = () => {
@@ -73,12 +99,12 @@ class Anamnese extends React.Component {
     }
 
     render(){
-        const { isAutenticated, paciente, anamnese, openModal } = this.state;
+        const { isAutenticated, paciente, anamnese, openModal, listPacientes, isLoading } = this.state;
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
             );    
-        }
+        } 
        
         const content = (
             <React.Fragment>
@@ -87,14 +113,27 @@ class Anamnese extends React.Component {
                         <NewPaciente />
                     </Paper>
                 </Modal>
+                <Button className="btn-add" disabled={paciente !== null} variant="contained" color="primary" onClick={() => this.handleOpenModalPaciente()}>
+                    <MdAdd size={25} /> Novo
+                </Button>
                 <Paper style={{marginBottom: "1em"}} className="paper">
-                    <Grid container spacing={1}>
-                        <Grid item xs>
-                            <Button className="btn-add" variant="contained" color="primary" onClick={this.handleOpenModalPaciente}>
-                                <MdAdd size={25} /> Novo
-                            </Button>                     
-                        </Grid>
-                    </Grid>
+                    
+                    <Typography variant="subtitle2" gutterBottom>Selecione o Paciente</Typography>
+                    <ReactSelect
+                        isSearchable
+                        options={listPacientes}
+                        isLoading={isLoading}
+                        value={paciente}
+                        styles={{ menu: base => ({ ...base, position: 'relative' }) }}
+                        onChange={(e) => this.handlePacienteChange(e)}
+                        isClearable
+                        noOptionsMessage={ () => "Nenhum paciente encontrado" }
+                    />
+
+
+                
+                
+{/*                    
                     <TextField
                         select
                         variant="outlined"
@@ -106,11 +145,9 @@ class Anamnese extends React.Component {
                     >
                         <MenuItem value="Paciente A">Paciente A</MenuItem>
                         <MenuItem value="Paciente B">Paciente B</MenuItem>
-                    </TextField>
+                    </TextField> */}
             
-                    <div className="paciente-card">
-                        {paciente !== "" && <PacienteCard nome="Paciente A" idade="28" cidade="Rio de Janeiro" estado="RJ" />}
-                    </div>
+        
 
                 </Paper>
                 {anamnese.map((item, index) => {
@@ -118,7 +155,7 @@ class Anamnese extends React.Component {
                         <Paper key={index} style={{marginBottom: "1em"}}  className="paper">
                             <Grid container alignContent="center" alignItems="center" spacing={1}>
                                 <Grid item xs>
-                                    {item.question}
+                                    <Typography variant="subtitle2">{item.question}</Typography>
                                     <RadioGroup aria-label={item.name} name={item.name} value={item.value} onChange={(e) => this.handleAnamneseChange(e, index)} row>
                                         <FormControlLabel
                                             value="yes"
@@ -141,7 +178,7 @@ class Anamnese extends React.Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => alert("Continuar :)")}
+                    onClick={this.handleContinueAnamnese}
                 >
                     Continuar
                 </Button>

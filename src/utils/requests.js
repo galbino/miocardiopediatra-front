@@ -1,3 +1,5 @@
+import Auth from './Auth';
+
 export function makeCancelable (promise) {
   let hasCanceled_ = false;
 
@@ -22,6 +24,7 @@ export function PostData(type, data){
         method: 'POST',
         headers: new Headers({
           'Content-type': 'application/json; charset=UTF-8',
+          'Authorization': Auth.isUserAuthenticated() ? Auth.getToken() : false,
         }), 
         body: JSON.stringify(data),
       })

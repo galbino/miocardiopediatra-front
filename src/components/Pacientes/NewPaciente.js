@@ -101,7 +101,6 @@ export default class NewPaciente extends React.Component {
     }
 
     handleConfirmar = (e) => {
-        console.log(this.state)
         e.preventDefault();
         let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
         if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
@@ -129,7 +128,8 @@ export default class NewPaciente extends React.Component {
         
         PostData("/signup", data).then(response => {
             if (response.errors.length === 0) {
-                this.setState({  redirect: "/login", statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
+                this.setState({  statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
+                this.props.handleNewUser(response.data); // back precisa mandar { dados cadastrais }
             } else {
                 this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
             }

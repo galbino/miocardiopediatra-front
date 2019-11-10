@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal, Paper, Grid, Button } from '@material-ui/core';
+import { Modal, Paper, Grid, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton } from '@material-ui/core';
 import { PacienteCard, Menu } from '../components';
 import NewPaciente from '../Pacientes/NewPaciente';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdMoreVert } from 'react-icons/md';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
 import { GetData } from '../../utils/requests';
@@ -28,7 +28,11 @@ class Pacientes extends React.Component {
   }
 
   handleCloseModalPaciente = () => {
-      this.setState({ openModal: false })
+    this.setState({ openModal: false })
+  }
+
+  handleOpenProfile = (id) => {
+    this.setState({ redirect: "/profile", user_id: id })
   }
 
   handleNewUser = (info) => {
@@ -65,13 +69,31 @@ class Pacientes extends React.Component {
         <Button className="btn-add" variant="contained" color="primary" onClick={() => this.handleOpenModalPaciente()}>
             <MdAdd size={25} /> Novo
         </Button>
+        <List>
         {listPacientes.map(paciente => {
           return <Grid container alignContent="center" alignItems="center">
             <Grid item xs>
-              {paciente.name}
+              
+                <Paper>
+        
+                  <ListItem button onClick={() => this.handleOpenProfile(paciente.id)}>
+                    <ListItemAvatar>
+                        <Avatar aria-label="recipe">{paciente.name.charAt(0)}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={paciente.name} />
+                    <ListItemSecondaryAction>
+                      <IconButton >
+                        <MdMoreVert />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </Paper>
+              
             </Grid>
           </Grid>
+          
         })}
+        </List>
        
       </React.Fragment>
     )

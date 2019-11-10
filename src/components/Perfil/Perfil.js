@@ -5,6 +5,7 @@ import { Menu } from '../components';
 import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button, Typography } from '@material-ui/core';
 import { MdCameraAlt, MdLockOutline } from 'react-icons/md';
 import InputMask from 'react-input-mask';
+import { GetData } from '../../utils/requests';
 
 const styles = {
     avatar: {
@@ -44,6 +45,8 @@ class Perfil extends React.Component {
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
+            user_id: props.match.params.id,
+            data: "",
         }
     }
 
@@ -52,9 +55,31 @@ class Perfil extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
+    componentDidMount(){
+        GetData("/patient/" + this.state.user_id).then(response => {
+            if (response.errors.length === 0){
+                let responseJSON = response.data;
+                let data = {
+                    name: responseJSON.name === null ? "" : responseJSON.name,
+                    email: responseJSON.email === null ? "" : responseJSON.email,
+                    cpf: responseJSON.cpf === null ? "" : responseJSON.cpf,
+                    data_nasc: responseJSON.data_nasc === null ? "" : responseJSON.data_nasc,
+                    telefone: responseJSON.estado === null ? "" : responseJSON.telefone,
+                    estado: responseJSON.estado === null ? "" : responseJSON.estado,
+                    cidade: responseJSON.cidade === null ? "" : responseJSON.cidade,
+                    bairro: responseJSON.bairro === null ? "" : responseJSON.bairro,
+                }
+                this.setState({ data: data })
+            } else {
+                console.log("erro ao carregar")
+            }
+        }).catch(() => console.log("erro de conexao/request"));
+    }
+
     render(){
         const { classes } = this.props
-        const isAutenticated = this.state.isAutenticated;
+        const  { isAutenticated, data, user_id } = this.state;
+        const { name, email, cpf, data_nasc, telefone, estado, cidade, bairro } = data;
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
@@ -137,7 +162,7 @@ class Perfil extends React.Component {
                                 <Grid item xs>
                                     <div className={classes.wrapperCamera}>
                                         <Avatar className={classes.avatar} src={""} alt="profile-image" sizes="60" >
-                                            
+                                            {name !== undefined && name.charAt(0)}
                                         </Avatar>
                                         <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
                                             <MdCameraAlt />
@@ -151,7 +176,7 @@ class Perfil extends React.Component {
                                                 // onBlur={this.handleBlur("nome")}
                                                 // error={shouldMarkError("nome")}
                                                 name="nome"
-                                                // value={nome}
+                                                value={name}
                                                 fullWidth
                                                 label="Nome Completo"
                                                 variant="outlined"
@@ -163,7 +188,7 @@ class Perfil extends React.Component {
                                                 name="email"
                                                 // error={shouldMarkError("email")}
                                                 // onBlur={this.handleBlur("email")}
-                                                // value={email}
+                                                value={email}
                                                 fullWidth
                                                 label="Email"
                                                 variant="outlined"
@@ -181,7 +206,7 @@ class Perfil extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <InputMask mask="999.999.999-99" value={"111"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask mask="999.999.999-99" value={cpf} onChange={(e) => this.handleChange(e)}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}       
@@ -197,7 +222,7 @@ class Perfil extends React.Component {
                                 </Grid>
                                
                                 <Grid item xs>
-                                    <InputMask mask="99/99/9999" value={"1"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask mask="99/99/9999" value={data_nasc} onChange={(e) => this.handleChange(e)}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}       
@@ -251,7 +276,7 @@ class Perfil extends React.Component {
                                 </Grid>
                  
                                 <Grid item xs>
-                                    <InputMask  type="tel" mask="(99) 99999-9999" value={"telefone"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask  type="tel" mask="(99) 99999-9999" value={telefone} onChange={(e) => this.handleChange(e)}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}       
@@ -275,7 +300,7 @@ class Perfil extends React.Component {
                                         // onBlur={this.handleBlur("estado")}
                                         // error={shouldMarkError("estado")}              
                                         // name="estado"
-                                        // value={estado}
+                                        value={estado}
                                         fullWidth
                                         label="Estado"
                                         variant="outlined"
@@ -291,7 +316,7 @@ class Perfil extends React.Component {
                                         // error={shouldMarkError("cidade")}     
                                         // onBlur={this.handleBlur("cidade")}                                  
                                         // name="cidade"
-                                        // value={cidade}
+                                        value={cidade}
                                         fullWidth
                                         label="Cidade"
                                         variant="outlined"
@@ -303,7 +328,7 @@ class Perfil extends React.Component {
                                         // error={shouldMarkError("bairro")}     
                                         // onBlur={this.handleBlur("bairro")}                                
                                         // name="bairro"
-                                        // value={bairro}
+                                        value={bairro}
                                         fullWidth
                                         label="Bairro"
                                         variant="outlined"
@@ -374,7 +399,7 @@ class Perfil extends React.Component {
 
         return(
             <React.Fragment>
-                <Menu title="Meu Perfil" component={content} handleLogout={this.handleLogout} />
+                <Menu title={Auth.getId() === user_id ? "Meu Perfil" : name} component={content} handleLogout={this.handleLogout} />
             </React.Fragment>
         )
     }

@@ -70,24 +70,11 @@ class Pacientes extends React.Component {
             <MdAdd size={25} /> Novo
         </Button>
         <List>
-        {listPacientes.map(paciente => {
-          return <Grid container alignContent="center" alignItems="center">
+        {listPacientes.map((paciente, index) => {
+          return <Grid key={index} container alignContent="center" alignItems="center">
             <Grid item xs>
               
-                <Paper>
-        
-                  <ListItem button onClick={() => this.handleOpenProfile(paciente.id)}>
-                    <ListItemAvatar>
-                        <Avatar aria-label="recipe">{paciente.name.charAt(0)}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={paciente.name} />
-                    <ListItemSecondaryAction>
-                      <IconButton >
-                        <MdMoreVert />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </Paper>
+                <PacienteCard nome={paciente.name} id={paciente.id} />
               
             </Grid>
           </Grid>

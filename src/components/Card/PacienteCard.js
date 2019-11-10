@@ -1,20 +1,22 @@
 import React from 'react';
 import { Paper, Avatar, Menu, MenuItem, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import { Route } from 'react-router-dom';
-import { red } from '@material-ui/core/colors';
+import { deepPurple } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { MdMoreVert } from 'react-icons/md';
 
 const useStyles = makeStyles(theme => ({
   paper: { 
-    marginBottom: "1em",
+    //marginBottom: "1em",
+    width: 385,
+    maxWidth: 385,
   },
   card: {
     //width: 94*window.innerWidth/100,
     backgroundColor: theme.palette.background.paper,
   },
   avatar: {
-    backgroundColor: red[500],
+    backgroundColor: deepPurple[500],
   },
   menu: {
     maxHeight: 48 * 4.5,
@@ -43,7 +45,7 @@ export default function PacienteCard(props) {
         
           <ListItem button className={classes.card} onClick={() => history.push('/anamnese/' + id)}>
             <ListItemAvatar>
-              <Avatar aria-label="recipe" className={classes.avatar}>{nome.charAt(0)}</Avatar>
+              <Avatar aria-label="recipe" className={classes.avatar}>{nome.charAt(0).toUpperCase()}</Avatar>
             </ListItemAvatar>
             <ListItemText primary={nome}  />
             <ListItemSecondaryAction>

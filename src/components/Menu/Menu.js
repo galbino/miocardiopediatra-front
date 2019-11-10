@@ -125,8 +125,6 @@ export default function PersistentDrawerLeft(props) {
       setOpen(!open)
   }
 
- 
-
   const handleChangeSearch = (event) => {
     setValue(event.target.value)
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Paper, Grid, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Avatar, IconButton } from '@material-ui/core';
+import { Modal, Paper, Grid, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, CircularProgress, ListItemText, Avatar, IconButton } from '@material-ui/core';
 import { PacienteCard, Menu } from '../components';
 import NewPaciente from '../Pacientes/NewPaciente';
 import { MdAdd, MdMoreVert } from 'react-icons/md';
@@ -14,6 +14,7 @@ class Pacientes extends React.Component {
       isAutenticated: Auth.isUserAuthenticated(),
       listPacientes: [],
       openModal: false,
+      loading: true,
     }
   }
 
@@ -44,7 +45,7 @@ class Pacientes extends React.Component {
   componentDidMount(){
     GetData("/patient").then(response => {
       if (response.errors.length === 0){
-        this.setState({ listPacientes: response.data })
+        this.setState({ listPacientes: response.data, loading: false })
       } else {
         console.log("erro ao carregar")
       }
@@ -52,7 +53,7 @@ class Pacientes extends React.Component {
   }
 
   render(){
-    const { isAutenticated, openModal, listPacientes } = this.state;
+    const { isAutenticated, openModal, listPacientes, loading } = this.state;
     if (!isAutenticated || isAutenticated === undefined){
         return (
               <Redirect push to="/login" />
@@ -66,20 +67,27 @@ class Pacientes extends React.Component {
                 <NewPaciente />
             </Paper>
         </Modal>
+        
         <Button className="btn-add" variant="contained" color="primary" onClick={() => this.handleOpenModalPaciente()}>
             <MdAdd size={25} /> Novo
         </Button>
         <List>
+        <Grid container alignContent="center" alignItems="center" spacing={2}>
+        {loading &&
+          <div style={{position: "relative", marginTop: "25%", left: "50%"}}>
+            <CircularProgress />
+          </div>
+        }
         {listPacientes.map((paciente, index) => {
-          return <Grid key={index} container alignContent="center" alignItems="center">
-            <Grid item xs>
-              
+          return <Grid key={index} item>
+            
                 <PacienteCard nome={paciente.name} id={paciente.id} />
-              
+                
             </Grid>
-          </Grid>
-          
+         
+    
         })}
+        </Grid>
         </List>
        
       </React.Fragment>

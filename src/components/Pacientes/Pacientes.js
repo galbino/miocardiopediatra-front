@@ -1,10 +1,11 @@
 import React from 'react';
 import { Modal, Paper, Grid, Button } from '@material-ui/core';
 import { PacienteCard, Menu } from '../components';
+import NewPaciente from '../Pacientes/NewPaciente';
 import { MdAdd } from 'react-icons/md';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
-import NewPaciente from '../Pacientes/NewPaciente';
+import { GetData } from '../../utils/requests';
 
 class Pacientes extends React.Component {
   constructor(props){
@@ -31,13 +32,23 @@ class Pacientes extends React.Component {
   }
 
   handleNewUser = (info) => {
-    let array = this.state.listPacientes;
-    array.unshift(info);
-    this.setState({ listPacientes: array })
-}
+      let array = this.state.listPacientes;
+      array.unshift(info);
+      this.setState({ listPacientes: array });
+  }
+
+  componentDidMount(){
+    GetData("/patient").then(response => {
+      if (response.errors.length === 0){
+        this.setState({ listPacientes: response.data })
+      } else {
+        console.log("erro ao carregar")
+      }
+    }).catch(() => console.log("erro de conexao/request"));
+  }
 
   render(){
-    const { isAutenticated, openModal, } = this.state;
+    const { isAutenticated, openModal, listPacientes } = this.state;
     if (!isAutenticated || isAutenticated === undefined){
         return (
               <Redirect push to="/login" />
@@ -54,22 +65,14 @@ class Pacientes extends React.Component {
         <Button className="btn-add" variant="contained" color="primary" onClick={() => this.handleOpenModalPaciente()}>
             <MdAdd size={25} /> Novo
         </Button>
-        <Grid container spacing={1}>
-          <Grid item xs>
-            
+        {listPacientes.map(paciente => {
+          return <Grid container alignContent="center" alignItems="center">
+            <Grid item xs>
+              {paciente.name}
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container spacing={1}>          
-          <Grid item xs>
-            <PacienteCard />    
-          </Grid>
-          {/* <Grid item xs>
-            <PacienteCard />
-          </Grid>
-          <Grid item xs>
-            <PacienteCard />
-          </Grid> */}
-        </Grid>
+        })}
+       
       </React.Fragment>
     )
   

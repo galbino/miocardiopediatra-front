@@ -46,7 +46,8 @@ export function GetData(type){
     fetch(process.env.REACT_APP_BASE_URL + type, {
       method: 'GET',
       headers: new Headers({
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': Auth.isUserAuthenticated() ? Auth.getToken() : false,
       }),
     })
     .then((response) => response.json())

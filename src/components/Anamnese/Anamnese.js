@@ -7,7 +7,7 @@ import PacienteCard from '../Card/PacienteCard';
 import { MdAdd } from 'react-icons/md';
 import NewPaciente from '../Pacientes/NewPaciente';
 import { default as ReactSelect } from 'react-select';
-import { PostData } from '../../utils/requests';
+import { PostData, GetData } from '../../utils/requests';
 
 class Anamnese extends React.Component {
     constructor(props){
@@ -51,9 +51,14 @@ class Anamnese extends React.Component {
     }
 
     componentDidMount(){
-        // request listagem dos pacientes
-        // set isLoading
-        this.setState({ isLoading: false })
+        GetData("/patient").then(response => {
+            if (response.errors.lenght === 0){
+                this.setState({ listPacientes: response.data, isLoading: false })
+            } else {
+                console.log("erro ao carregar")
+                this.setState({ isLoading: false })
+            }
+        }).catch(() => this.setState({ isLoading: false }));
     }
 
     handleLogout = () => {

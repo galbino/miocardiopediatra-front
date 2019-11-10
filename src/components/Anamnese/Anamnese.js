@@ -59,6 +59,15 @@ class Anamnese extends React.Component {
                 this.setState({ isLoading: false })
             }
         }).catch(() => this.setState({ isLoading: false }));
+        // GetData("/anamnese/" + Auth.getId()).then(response => {
+        //     if (response.errors.lenght === 0){
+        //         //this.setState({ listPacientes: response.data, isLoading: false })
+        //     } else {
+        //         console.log("erro ao carregar")
+        //         this.setState({ isLoading: false })
+        //     }
+        // }).catch(() => this.setState({ isLoading: false }));
+
     }
 
     handleLogout = () => {

@@ -99,8 +99,8 @@ a {
 
 .paciente-card {
   margin: auto;
+  padding: 10px;
   
-  padding: 20px;
 }
 
 @media (min-width: 320px) and (max-width: 600px) {

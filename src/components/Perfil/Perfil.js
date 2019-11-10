@@ -5,11 +5,13 @@ import { Menu } from '../components';
 import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button, Typography } from '@material-ui/core';
 import { MdCameraAlt, MdLockOutline } from 'react-icons/md';
 import InputMask from 'react-input-mask';
+import { GetData } from '../../utils/requests';
 
 const styles = {
     avatar: {
         width: 130,
         height: 130,
+    
     },
     wrapperCamera: {
         position: "relative",
@@ -44,6 +46,8 @@ class Perfil extends React.Component {
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
+            user_id: props.match.params.id,
+            data: "",
         }
     }
 
@@ -52,9 +56,41 @@ class Perfil extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
+    // componentDidUpdate(prevProps, prevState){
+    //     console.log(prevState.user_id)
+    //     console.log(prevProps.match.params.id)
+    //     //if (prevState.user_id !== prevProps.match.params.id ) return true
+    // }
+
+    // shouldComponentUpdate(nextProps, nextState){
+    //     if (nextState.user_id !== nextProps.match.params.id ) return true
+    // }
+
+    componentDidMount(){
+        GetData("/patient/" + this.state.user_id).then(response => {
+            if (response.errors.length === 0){
+                let responseJSON = response.data;
+                let data = {
+                    name: responseJSON.name === null ? "" : responseJSON.name,
+                    email: responseJSON.email === null ? "" : responseJSON.email,
+                    cpf: responseJSON.cpf === null ? "" : responseJSON.cpf,
+                    data_nasc: responseJSON.data_nasc === null ? "" : responseJSON.data_nasc,
+                    telefone: responseJSON.estado === null ? "" : responseJSON.telefone,
+                    estado: responseJSON.estado === null ? "" : responseJSON.estado,
+                    cidade: responseJSON.cidade === null ? "" : responseJSON.cidade,
+                    bairro: responseJSON.bairro === null ? "" : responseJSON.bairro,
+                }
+                this.setState({ data: data })
+            } else {
+                console.log("erro ao carregar")
+            }
+        }).catch(() => console.log("erro de conexao/request"));
+    }
+
     render(){
         const { classes } = this.props
-        const isAutenticated = this.state.isAutenticated;
+        const  { isAutenticated, data, user_id } = this.state;
+        
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
@@ -137,7 +173,7 @@ class Perfil extends React.Component {
                                 <Grid item xs>
                                     <div className={classes.wrapperCamera}>
                                         <Avatar className={classes.avatar} src={""} alt="profile-image" sizes="60" >
-                                            
+                                            {data.name !== undefined && data.name.charAt(0).toUpperCase()}
                                         </Avatar>
                                         <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
                                             <MdCameraAlt />
@@ -150,8 +186,10 @@ class Perfil extends React.Component {
                                             <TextField 
                                                 // onBlur={this.handleBlur("nome")}
                                                 // error={shouldMarkError("nome")}
+                                                disabled
+                                                InputLabelProps={{ shrink: true }}
                                                 name="nome"
-                                                // value={nome}
+                                                value={data.name}
                                                 fullWidth
                                                 label="Nome Completo"
                                                 variant="outlined"
@@ -161,9 +199,11 @@ class Perfil extends React.Component {
                                         <Grid item xs={12}>
                                             <TextField 
                                                 name="email"
+                                                disabled
                                                 // error={shouldMarkError("email")}
                                                 // onBlur={this.handleBlur("email")}
-                                                // value={email}
+                                                InputLabelProps={{ shrink: true }}
+                                                value={data.email}
                                                 fullWidth
                                                 label="Email"
                                                 variant="outlined"
@@ -181,10 +221,10 @@ class Perfil extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <InputMask mask="999.999.999-99" value={"111"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask mask="999.999.999-99" disabled InputLabelProps={{ shrink: true }} value={data.cpf}> 
                                         {inputProps => (
                                             <TextField
-                                                {...inputProps}       
+                                                {...inputProps}                                               
                                                 // error={shouldMarkError("cpf")}
                                                 label="CPF"
                                                 name="cpf"
@@ -197,12 +237,13 @@ class Perfil extends React.Component {
                                 </Grid>
                                
                                 <Grid item xs>
-                                    <InputMask mask="99/99/9999" value={"1"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask mask="99/99/9999" disabled InputLabelProps={{ shrink: true }} value={data.data_nasc}> 
                                         {inputProps => (
                                             <TextField
+                                               
                                                 {...inputProps}       
                                                 label="Data de Nascimento"
-                                                // error={shouldMarkError("dataNascimento")}
+                                                //error={shouldMarkError("dataNascimento")}
                                                 name="dataNascimento"
                                                 type="text"
                                                 variant="outlined"
@@ -214,30 +255,29 @@ class Perfil extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    
-                                        
+        
+{/*                                         
                                             <TextField
                                                 select
                                                 // onBlur={this.handleBlur("especialidade")}
                                                 // value={especialidade}
-                                                onChange={this.handleInputChange}
+                                                //onChange={this.handleInputChange}
+                                                disabled
                                                 id="esp"
                                                 fullWidth
+                                                value={data}
                                                 // error={shouldMarkError("especialidade")}
                                                 variant="outlined"
                                                 label="Especialidade"
                                                 placeholder="Especialidade"
-                                            >
-                                                {/* {especialidadeArray.map(esp => {
-                                                     return <MenuItem key={esp.id} value={esp.id}>
-                                                                {esp.name}
-                                                            </MenuItem>
-                                                })} */}
-                                            </TextField>
+                                                InputLabelProps={{ shrink: true }}
+                                            /> */}
+                                       
+                                            
                                     
                                 </Grid>
                                 <Grid className="grid-item" item xs>
-                                    <TextField 
+                                    {/* <TextField 
                                         name="crm"
                                         // error={shouldMarkError("crm")}
                                         // onBlur={this.handleBlur("crm")}
@@ -247,11 +287,11 @@ class Perfil extends React.Component {
                                         label="CRM"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
-                                    />
+                                    /> */}
                                 </Grid>
                  
                                 <Grid item xs>
-                                    <InputMask  type="tel" mask="(99) 99999-9999" value={"telefone"} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask  type="tel" mask="(99) 99999-9999" InputLabelProps={{ shrink: true }} value={data.telefone} onChange={(e) => this.handleChange(e)}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}       
@@ -271,31 +311,32 @@ class Perfil extends React.Component {
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
                                     <TextField                       
-                                        select
+                                       // select
                                         // onBlur={this.handleBlur("estado")}
                                         // error={shouldMarkError("estado")}              
                                         // name="estado"
-                                        // value={estado}
+                                        value={data.estado}
                                         fullWidth
                                         label="Estado"
                                         variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
-                                    >
-                                        {/* {this.state.estadoArray.map(uf => {
-                                            return <MenuItem key={uf} value={uf}>{uf}</MenuItem>
-                                        })} */}
-                                    </TextField>
+                                        disabled
+                                        InputLabelProps={{ shrink: true }}
+                                        //onChange={(e) => this.handleChange(e)}
+                                    />
+                                    
                                 </Grid>
                                 <Grid className="grid-item"  item xs>
                                     <TextField       
                                         // error={shouldMarkError("cidade")}     
                                         // onBlur={this.handleBlur("cidade")}                                  
                                         // name="cidade"
-                                        // value={cidade}
+                                        InputLabelProps={{ shrink: true }}
+                                        disabled
+                                        value={data.cidade}
                                         fullWidth
                                         label="Cidade"
                                         variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
+                                       // onChange={(e) => this.handleChange(e)}
                                     />
                                 </Grid>
                                 <Grid item xs>
@@ -303,11 +344,13 @@ class Perfil extends React.Component {
                                         // error={shouldMarkError("bairro")}     
                                         // onBlur={this.handleBlur("bairro")}                                
                                         // name="bairro"
-                                        // value={bairro}
+                                        InputLabelProps={{ shrink: true }}
+                                        disabled
+                                        value={data.bairro}
                                         fullWidth
                                         label="Bairro"
                                         variant="outlined"
-                                        onChange={(e) => this.handleChange(e)}
+                                       // onChange={(e) => this.handleChange(e)}
                                     />
                                 </Grid>
                             </Grid>
@@ -358,13 +401,13 @@ class Perfil extends React.Component {
                                     />
                                 </Grid>
                             </Grid> */}
-                            <div style={{display: "flex", alignItems: "center" }}>
+                            {/* <div style={{display: "flex", alignItems: "center" }}>
                                 <Typography variant="body1">Trocar Senha</Typography>
                                 <IconButton  className={classes.changePassword} color="primary" onClick={() => alert("change password :)")}>
                                     <MdLockOutline />
                                 </IconButton>
 
-                            </div>
+                            </div> */}
 
                             <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
@@ -374,7 +417,7 @@ class Perfil extends React.Component {
 
         return(
             <React.Fragment>
-                <Menu title="Meu Perfil" component={content} handleLogout={this.handleLogout} />
+                <Menu title={Auth.getId() === user_id ? "Meu Perfil" : data.name} component={content} handleLogout={this.handleLogout} />
             </React.Fragment>
         )
     }

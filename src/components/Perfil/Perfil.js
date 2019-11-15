@@ -47,7 +47,16 @@ class Perfil extends React.Component {
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
             user_id: props.match.params.id,
-            data: "",
+            data: {
+                name: "",
+                email: "",
+                cpf: "",
+                data_nasc: "",
+                telefone: "",
+                estado: "",
+                cidade: "",
+                bairro: "",
+            }
         }
     }
 
@@ -66,7 +75,32 @@ class Perfil extends React.Component {
     //     if (nextState.user_id !== nextProps.match.params.id ) return true
     // }
 
+    componentDidUpdate(prevProps){
+        if (prevProps.match.params.id !== this.props.match.params.id){
+            GetData("/patient/" + this.props.match.params.id).then(response => {
+                if (response.errors.length === 0){
+                    let responseJSON = response.data;
+                    let data = {
+                        name: responseJSON.name === null ? "" : responseJSON.name,
+                        email: responseJSON.email === null ? "" : responseJSON.email,
+                        cpf: responseJSON.cpf === null ? "" : responseJSON.cpf,
+                        data_nasc: responseJSON.data_nasc === null ? "" : responseJSON.data_nasc,
+                        telefone: responseJSON.estado === null ? "" : responseJSON.telefone,
+                        estado: responseJSON.estado === null ? "" : responseJSON.estado,
+                        cidade: responseJSON.cidade === null ? "" : responseJSON.cidade,
+                        bairro: responseJSON.bairro === null ? "" : responseJSON.bairro,
+                    }
+                    this.setState({ data: data })
+                } else {
+                    console.log("erro ao carregar")
+                }
+            }).catch(() => console.log("erro de conexao/request"));
+        }
+    }
+
+
     componentDidMount(){
+     
         GetData("/patient/" + this.state.user_id).then(response => {
             if (response.errors.length === 0){
                 let responseJSON = response.data;
@@ -99,6 +133,7 @@ class Perfil extends React.Component {
 
         const content = (
             <React.Fragment>
+                {user_id == Auth.getId() ? "My Profile":"Paciente"}
                 {/* <Paper className="paper">
                 <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1}>
                     <Grid item xs>
@@ -189,7 +224,7 @@ class Perfil extends React.Component {
                                                 disabled
                                                 InputLabelProps={{ shrink: true }}
                                                 name="nome"
-                                                value={data.name}
+                                                value={data.name || ''}
                                                 fullWidth
                                                 label="Nome Completo"
                                                 variant="outlined"
@@ -203,7 +238,7 @@ class Perfil extends React.Component {
                                                 // error={shouldMarkError("email")}
                                                 // onBlur={this.handleBlur("email")}
                                                 InputLabelProps={{ shrink: true }}
-                                                value={data.email}
+                                                value={data.email || ''}
                                                 fullWidth
                                                 label="Email"
                                                 variant="outlined"
@@ -221,7 +256,7 @@ class Perfil extends React.Component {
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-                                    <InputMask mask="999.999.999-99" disabled InputLabelProps={{ shrink: true }} value={data.cpf}> 
+                                    <InputMask mask="999.999.999-99" disabled InputLabelProps={{ shrink: true }} value={data.cpf || ''}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}                                               
@@ -237,7 +272,7 @@ class Perfil extends React.Component {
                                 </Grid>
                                
                                 <Grid item xs>
-                                    <InputMask mask="99/99/9999" disabled InputLabelProps={{ shrink: true }} value={data.data_nasc}> 
+                                    <InputMask mask="99/99/9999" disabled InputLabelProps={{ shrink: true }} value={data.data_nasc || ''}> 
                                         {inputProps => (
                                             <TextField
                                                
@@ -291,7 +326,7 @@ class Perfil extends React.Component {
                                 </Grid>
                  
                                 <Grid item xs>
-                                    <InputMask  type="tel" mask="(99) 99999-9999" InputLabelProps={{ shrink: true }} value={data.telefone} onChange={(e) => this.handleChange(e)}> 
+                                    <InputMask  type="tel" mask="(99) 99999-9999" InputLabelProps={{ shrink: true }} value={data.telefone || ''} onChange={(e) => this.handleChange(e)}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}       
@@ -315,7 +350,7 @@ class Perfil extends React.Component {
                                         // onBlur={this.handleBlur("estado")}
                                         // error={shouldMarkError("estado")}              
                                         // name="estado"
-                                        value={data.estado}
+                                        value={data.estado || ''}
                                         fullWidth
                                         label="Estado"
                                         variant="outlined"
@@ -332,7 +367,7 @@ class Perfil extends React.Component {
                                         // name="cidade"
                                         InputLabelProps={{ shrink: true }}
                                         disabled
-                                        value={data.cidade}
+                                        value={data.cidade || ''}
                                         fullWidth
                                         label="Cidade"
                                         variant="outlined"
@@ -346,7 +381,7 @@ class Perfil extends React.Component {
                                         // name="bairro"
                                         InputLabelProps={{ shrink: true }}
                                         disabled
-                                        value={data.bairro}
+                                        value={data.bairro || ''}
                                         fullWidth
                                         label="Bairro"
                                         variant="outlined"

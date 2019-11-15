@@ -39,7 +39,7 @@ class Pacientes extends React.Component {
   handleNewUser = (info) => {
       let array = this.state.listPacientes;
       array.unshift(info);
-      this.setState({ listPacientes: array });
+      this.setState({ listPacientes: array, openModal: false });
   }
 
   componentDidMount(){

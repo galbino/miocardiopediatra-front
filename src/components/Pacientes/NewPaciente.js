@@ -103,7 +103,7 @@ export default class NewPaciente extends React.Component {
     handleConfirmar = (e) => {
         e.preventDefault();
         let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
-        if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
+        if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel === "" || senha === "" || confirmarSenha === "" ) {
             return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
         } 
         dataNascimento = this.FormataStringData(dataNascimento);

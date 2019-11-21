@@ -17,19 +17,32 @@ import LoopIcon from '@material-ui/icons/Loop';
 
 
 const styles = {
-    avatar: {
-        width: 150,
-        height: 150,
+    
+    gridContainer: {
+        marginBottom: 5,
+        marginLeft: 5,
+        marginRight: 5
+    },
+    
+    profileMainInfo: {
+        position: "relative",
+        width: "50%",
+        margin: "auto",
+        alignContent: "center",
+        alignItems: "center",
+        spacing: '1'
     },
     wrapperCamera: {
         position: "relative",
         width: "fit-content",
         margin: "auto",
+        alignContent: "center",
+        alignItems: "center",
+        spacing: '1'
     },
-    picDesc: {
-      position: "relative",
-      width: "fit-content",
-      margin: "auto",
+    avatar: {
+        width: 150,
+        height: 150,
     },
     camera: {
         position: "absolute",
@@ -41,14 +54,29 @@ const styles = {
             backgroundColor: "#002984"
         }
     },
-    gridContainer: {
-        marginBottom: 5,
-    },
+    
     button: {
-        marginBottom: '0.8em',
-        alignContent:'right',
-        flex: 1
-    }
+        marginTop: '0.8em',
+        flex: 1,
+    },
+    
+    buttonGrid: {
+        marginBottom: 5,
+        marginRight: 0,
+        spacing: '1'
+    },
+    
+    buttonText:{
+        alignContent: "right",
+        width: "50%",
+        spacing: '1',
+        textAlign: 'left'
+    },
+    buttonIco:{
+        width: "50%",
+        spacing: '1',
+    },
+    
 }
 
 class PerfilPaciente extends React.Component {
@@ -77,46 +105,48 @@ class PerfilPaciente extends React.Component {
         const content = (
             <React.Fragment>
               <Paper className="paper">
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1} item xs>
-                   <div className={classes.wrapperCamera}>
-                        <Avatar className={classes.avatar} src={""} alt="profile-image" sizes="60" >
-                        </Avatar>
-                        <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
-                            <MdCameraAlt />
-                        </IconButton>
-                    </div>
-                </Grid>
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1} item xs>
-                  <div className={classes.picDesc}>
-                    <Typography variant="h6" gutterBottom>
-                      Ana Marta Vasconcelos Dias (CPF: XXX.XXX.XXX-XX)
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1}>
-                  <Grid item xs>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                          <Typography gutterBottom>Data Nascimento: XXXXXX</Typography>
-                          <Typography gutterBottom>Sexo: XXXXXX</Typography>
-                          <Typography gutterBottom>RG: XXXXXX</Typography>
-                        </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                
-                <Button variant="contained" color="primary" className={classes.button} endIcon={<DoneAllIcon />}>
-                <text>oi</text>
-                </Button>
-                
-                <Button variant="contained" color="primary" className={classes.button} endIcon={<DoneIcon />}>
-                <text>oi</text>
-                </Button>
-                
-                <Button variant="contained" color="secondary" className={classes.button} endIcon={<LoopIcon />}>
-                Exame de Sangue
-                </Button>
               
+                <Grid className={classes.gridContainerAvatar} container item xs>
+                   
+                    <div className={classes.profileMainInfo}>
+                       <div className={classes.wrapperCamera}>
+                            <Avatar className={classes.avatar} src={""} sizes="60" ></Avatar>
+                            <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
+                                <MdCameraAlt />
+                            </IconButton>
+                        </div>
+                    </div>
+                    <div className={classes.profileMainInfo}>
+                        <Typography variant="h6" gutterBottom>
+                            Ana Marta Vasconcelos Dias (CPF: XXX.XXX.XXX-XX)
+                        </Typography>
+                        <Typography gutterBottom>Data Nascimento: XXXXXX</Typography>
+                        <Typography gutterBottom>Sexo: XXXXXX</Typography>
+                        <Typography gutterBottom>RG: XXXXXX</Typography>
+                    </div>
+                    
+                </Grid>
+              
+                <Button variant="contained" color="primary" className={classes.button}>
+                <Grid className={classes.buttonGrid} container>
+                <Typography className={classes.buttonText}>ECOCARDIOGRAMA</Typography>
+                <DoneAllIcon className={classes.buttonIco}/>                
+                </Grid>
+                </Button>
+                
+                <Button variant="contained" color="primary" className={classes.button}>
+                <Grid className={classes.buttonGrid} container>
+                <Typography className={classes.buttonText}>ECOCARDIOGRAMA</Typography>
+                <DoneIcon className={classes.buttonIco}/>                
+                </Grid>
+                </Button>
+                
+                <Button variant="contained" color="secondary" className={classes.button}>
+                <Grid className={classes.buttonGrid} container>
+                <Typography className={classes.buttonText}>ECOCARDIOGRAMA</Typography>
+                <LoopIcon className={classes.buttonIco}/>                
+                </Grid>
+                </Button>
               </Paper>
             </React.Fragment>
         )

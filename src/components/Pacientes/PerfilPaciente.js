@@ -4,7 +4,17 @@ import { Redirect } from 'react-router'
 import { Menu } from '../components';
 import { withStyles, Grid, TextField, Avatar, IconButton, Paper } from '@material-ui/core';
 import { MdCameraAlt } from 'react-icons/md';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import DoneIcon from '@material-ui/icons/Done';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import LoopIcon from '@material-ui/icons/Loop';
+
+
+
+
+
 
 const styles = {
     avatar: {
@@ -33,6 +43,11 @@ const styles = {
     },
     gridContainer: {
         marginBottom: 5,
+    },
+    button: {
+        marginBottom: '0.8em',
+        alignContent:'right',
+        flex: 1
     }
 }
 
@@ -89,6 +104,19 @@ class PerfilPaciente extends React.Component {
                     </Grid>
                   </Grid>
                 </Grid>
+                
+                <Button variant="contained" color="primary" className={classes.button} endIcon={<DoneAllIcon />}>
+                <text>oi</text>
+                </Button>
+                
+                <Button variant="contained" color="primary" className={classes.button} endIcon={<DoneIcon />}>
+                <text>oi</text>
+                </Button>
+                
+                <Button variant="contained" color="secondary" className={classes.button} endIcon={<LoopIcon />}>
+                Exame de Sangue
+                </Button>
+              
               </Paper>
             </React.Fragment>
         )
@@ -101,4 +129,4 @@ class PerfilPaciente extends React.Component {
     }
 }
 
-export default withStyles(styles) (PerfilPaciente);
+export default withStyles(styles, makeStyles) (PerfilPaciente);

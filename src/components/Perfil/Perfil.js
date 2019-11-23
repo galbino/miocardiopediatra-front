@@ -65,16 +65,6 @@ class Perfil extends React.Component {
         this.setState({ isAutenticated: false })
     }
 
-    // componentDidUpdate(prevProps, prevState){
-    //     console.log(prevState.user_id)
-    //     console.log(prevProps.match.params.id)
-    //     //if (prevState.user_id !== prevProps.match.params.id ) return true
-    // }
-
-    // shouldComponentUpdate(nextProps, nextState){
-    //     if (nextState.user_id !== nextProps.match.params.id ) return true
-    // }
-
     componentDidUpdate(prevProps){
         if (prevProps.match.params.id !== this.props.match.params.id){
             GetData("/patient/" + this.props.match.params.id).then(response => {
@@ -109,7 +99,9 @@ class Perfil extends React.Component {
                     email: responseJSON.email === null ? "" : responseJSON.email,
                     cpf: responseJSON.cpf === null ? "" : responseJSON.cpf,
                     data_nasc: responseJSON.data_nasc === null ? "" : responseJSON.data_nasc,
-                    telefone: responseJSON.estado === null ? "" : responseJSON.telefone,
+                    peso: responseJSON.peso === null ? "" : responseJSON.peso,
+                    altura: responseJSON.altura === null ? "" : responseJSON.altura,
+                    telefone: responseJSON.telefone === null ? "" : responseJSON.telefone,
                     estado: responseJSON.estado === null ? "" : responseJSON.estado,
                     cidade: responseJSON.cidade === null ? "" : responseJSON.cidade,
                     bairro: responseJSON.bairro === null ? "" : responseJSON.bairro,
@@ -132,76 +124,7 @@ class Perfil extends React.Component {
         }
 
         const content = (
-            <React.Fragment>
-                {user_id == Auth.getId() ? "My Profile":"Paciente"}
-                {/* <Paper className="paper">
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1}>
-                    <Grid item xs>
-                        <TextField
-                            name="nome"
-                            fullWidth
-                            variant="outlined"
-                            label="Nome"
-                            placeholder="Nome"
-                        />
-                    </Grid>
-                </Grid>
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1}>
-                   
-                    <Grid item xs>
-                        <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                                <TextField
-                                    name="indentidade"
-                                    fullWidth
-                                    variant="outlined"
-                                    label="Identidade"
-                                    placeholder="Identidade"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="dataNascimento"
-                                    fullWidth
-                                    variant="outlined"
-                                    label="Data de Nascimento"
-                                    placeholder="Data de Nascimento"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    name="sexo"
-                                    fullWidth
-                                    variant="outlined"
-                                    label="Sexo"
-                                    placeholder="Sexo"
-                                />
-                            </Grid>
-                        
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid className={classes.gridContainer} container alignContent="center" alignItems="center" spacing={1}>
-                    <Grid item xs>
-                        <TextField
-                            name="altura"
-                            fullWidth
-                            variant="outlined"
-                            label="Altura"
-                            placeholder="Altura"
-                        />
-                    </Grid>
-                    <Grid item xs>
-                        <TextField
-                            name="peso"
-                            fullWidth
-                            variant="outlined"
-                            label="Peso"
-                            placeholder="Peso"
-                        />
-                    </Grid>
-                </Grid>
-                </Paper> */}
+            <React.Fragment>                   
                 <Paper className="profile-paper" elevation={3}>
                         <form>
                             <Grid className="grid-container" container>
@@ -210,9 +133,9 @@ class Perfil extends React.Component {
                                         <Avatar className={classes.avatar} src={""} alt="profile-image" sizes="60" >
                                             {data.name !== undefined && data.name.charAt(0).toUpperCase()}
                                         </Avatar>
-                                        <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
+                                        {/* <IconButton className={classes.camera} color="primary" onClick={() => alert("change picture :)")}>
                                             <MdCameraAlt />
-                                        </IconButton>
+                                        </IconButton> */}
                                     </div>
                                 </Grid>
                                 <Grid item xs>
@@ -249,11 +172,7 @@ class Perfil extends React.Component {
                                     
                                 </Grid>
                             </Grid>
-                            <Grid className="grid-container" container>
-                                <Grid item xs>
-                                    
-                                </Grid>
-                            </Grid>
+                    
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
                                     <InputMask mask="999.999.999-99" disabled InputLabelProps={{ shrink: true }} value={data.cpf || ''}> 
@@ -272,73 +191,63 @@ class Perfil extends React.Component {
                                 </Grid>
                                
                                 <Grid item xs>
-                                    <InputMask mask="99/99/9999" disabled InputLabelProps={{ shrink: true }} value={data.data_nasc || ''}> 
-                                        {inputProps => (
-                                            <TextField
-                                               
-                                                {...inputProps}       
-                                                label="Data de Nascimento"
-                                                //error={shouldMarkError("dataNascimento")}
-                                                name="dataNascimento"
-                                                type="text"
-                                                variant="outlined"
-                                                fullWidth  
-                                            />
-                                        )}
-                                    </InputMask>
+                                    <TextField   
+                                        InputLabelProps={{ shrink: true }} value={data.data_nasc || ''} 
+                                        label="Data de Nascimento"
+                                        //error={shouldMarkError("dataNascimento")}
+                                        disabled
+                                        name="dataNascimento"
+                                        type="text"
+                                        variant="outlined"
+                                        fullWidth  
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid className="grid-container" container>
                                 <Grid className="grid-item" item xs>
-        
-{/*                                         
-                                            <TextField
-                                                select
-                                                // onBlur={this.handleBlur("especialidade")}
-                                                // value={especialidade}
-                                                //onChange={this.handleInputChange}
-                                                disabled
-                                                id="esp"
-                                                fullWidth
-                                                value={data}
-                                                // error={shouldMarkError("especialidade")}
-                                                variant="outlined"
-                                                label="Especialidade"
-                                                placeholder="Especialidade"
-                                                InputLabelProps={{ shrink: true }}
-                                            /> */}
-                                       
+                                    <TextField 
+                                        name="peso"
+                                        disabled
+                                        value={data.peso}
+                                        fullWidth
+                                        type="text"
+                                        label="Peso"
+                                        variant="outlined"
+                                        InputLabelProps={{ shrink: true }}
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
                                             
                                     
                                 </Grid>
                                 <Grid className="grid-item" item xs>
-                                    {/* <TextField 
-                                        name="crm"
-                                        // error={shouldMarkError("crm")}
-                                        // onBlur={this.handleBlur("crm")}
-                                        // value={crm}
+                                    <TextField 
+                                        name="altura"
+                                        disabled
+                                        value={data.altura}
                                         fullWidth
-                                        type="number"
-                                        label="CRM"
+                                        type="text"
+                                        label="Altura"
                                         variant="outlined"
+                                        InputLabelProps={{ shrink: true }}
                                         onChange={(e) => this.handleChange(e)}
-                                    /> */}
+                                    />
                                 </Grid>
                  
                                 <Grid item xs>
-                                    <InputMask  type="tel" mask="(99) 99999-9999" InputLabelProps={{ shrink: true }} value={data.telefone || ''} onChange={(e) => this.handleChange(e)}> 
-                                        {inputProps => (
-                                            <TextField
-                                                {...inputProps}       
-                                                label="Telefone"
-                                                // error={shouldMarkError("telefone")}
-                                                name="telefone"
-                                                type="text"
-                                                variant="outlined"
-                                                fullWidth  
-                                            />
-                                        )}
-                                    </InputMask>
+                            
+                                    <TextField
+                                        disabled
+                                        label="Telefone"
+                                        InputLabelProps={{ shrink: true }} 
+                                        value={data.telefone || ''}
+                                            onChange={(e) => this.handleChange(e)}
+                                        // error={shouldMarkError("telefone")}
+                                        name="telefone"
+                                        type="text"
+                                        variant="outlined"
+                                        fullWidth  
+                                    />
+                                  
                                 </Grid>
                                
                             </Grid>

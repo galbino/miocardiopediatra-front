@@ -221,7 +221,7 @@ export default function PersistentDrawerLeft(props) {
             />
 
             <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/anamnese')}>
+                <ListItem button onClick={() => history.push('/anamnese/' + id)}>
                     <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
                     <ListItemText primary={"Anamnese"}></ListItemText>
                 </ListItem>
@@ -229,7 +229,7 @@ export default function PersistentDrawerLeft(props) {
             />
            
            <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/perfil/' + id)}>
+                <ListItem button onClick={() => history.push('/myperfil/' + id)}>
                     <ListItemIcon><MdPerson size={30} /></ListItemIcon>
                     <ListItemText primary={"Perfil"}></ListItemText>
                 </ListItem>

@@ -10,6 +10,7 @@ import Perfil from './Perfil/Perfil';
 import Anamnese from './Anamnese/Anamnese';
 import AnamneseList from './Anamnese/AnamneseList';
 import AnamneseInformation from './Anamnese/AnamneseInformation';
+import PerfilMedico from './Perfil/PerfilMedico';
 
 export {
     LoginPage,
@@ -23,5 +24,6 @@ export {
     Perfil,
     Anamnese,
     AnamneseList,
-    AnamneseInformation
+    AnamneseInformation,
+    PerfilMedico
 }

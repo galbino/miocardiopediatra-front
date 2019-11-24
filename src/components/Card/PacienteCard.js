@@ -44,6 +44,8 @@ export default function PacienteCard(props) {
       return history.push('/perfil/' + id) 
     } else if (option === "Visualizar Anamneses") {
       return history.push('/anamneses/' + id) 
+    } else {
+      return history.push('/anamnese/' + id) 
     }
   }
 

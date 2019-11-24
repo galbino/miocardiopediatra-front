@@ -191,16 +191,20 @@ class Perfil extends React.Component {
                                 </Grid>
                                
                                 <Grid item xs>
-                                    <TextField   
-                                        InputLabelProps={{ shrink: true }} value={data.data_nasc || ''} 
-                                        label="Data de Nascimento"
-                                        //error={shouldMarkError("dataNascimento")}
-                                        disabled
-                                        name="dataNascimento"
-                                        type="text"
-                                        variant="outlined"
-                                        fullWidth  
-                                    />
+                                    <InputMask mask="99/99/9999" disabled InputLabelProps={{ shrink: true }} value={data.data_nasc || ''}> 
+                                        {inputProps => (
+                                            <TextField   
+                                                InputLabelProps={{ shrink: true }} value={data.data_nasc || ''} 
+                                                label="Data de Nascimento"
+                                                //error={shouldMarkError("dataNascimento")}
+                                                disabled
+                                                name="dataNascimento"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}        
+                                    </InputMask>
                                 </Grid>
                             </Grid>
                             <Grid className="grid-container" container>
@@ -234,20 +238,22 @@ class Perfil extends React.Component {
                                 </Grid>
                  
                                 <Grid item xs>
-                            
-                                    <TextField
-                                        disabled
-                                        label="Telefone"
-                                        InputLabelProps={{ shrink: true }} 
-                                        value={data.telefone || ''}
-                                            onChange={(e) => this.handleChange(e)}
-                                        // error={shouldMarkError("telefone")}
-                                        name="telefone"
-                                        type="text"
-                                        variant="outlined"
-                                        fullWidth  
-                                    />
-                                  
+                                    <InputMask mask="(99) 99999-9999" disabled InputLabelProps={{ shrink: true }} value={data.telefone || ''}  onChange={(e) => this.handleChange(e)}> 
+                                        {inputProps => (
+                                            <TextField
+                                                disabled
+                                                label="Telefone"
+                                                InputLabelProps={{ shrink: true }} 
+                                                // value={data.telefone || ''}
+                                                   
+                                                // error={shouldMarkError("telefone")}
+                                                name="telefone"
+                                                type="text"
+                                                variant="outlined"
+                                                fullWidth  
+                                            />
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                
                             </Grid>

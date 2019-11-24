@@ -14,6 +14,7 @@ class Anamnese extends React.Component {
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
+            pacient_id: props.match.params.id,
             listPacientes: [],
             paciente: null,
             anamnese: "",
@@ -27,7 +28,7 @@ class Anamnese extends React.Component {
             displayMessage: "",
             statusSnack: false,
             variant: "",
-            my_anamnese: true,
+            my_anamnese: false,
             loading_anamneses: true,
             minhas_anamneses: [],
             my_questions: []
@@ -38,10 +39,15 @@ class Anamnese extends React.Component {
         GetData("/patient").then(response => {
             if (response.errors.length === 0){
                 let pacientes = []
+                let paciente = this.state.paciente
                 response.data.map((item, i) => {
+                    if (this.state.pacient_id !== Auth.getId() && this.state.pacient_id === item.id) {
+                        paciente = [{id: item.id, name: item.name, label: item.name}]
+                    }
                     pacientes.push({id: item.id, name: item.name, label: item.name})
                 })
-                this.setState({ listPacientes: pacientes, isLoading: false })
+                
+                this.setState({ listPacientes: pacientes, isLoading: false, paciente: paciente })
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }

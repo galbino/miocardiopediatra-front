@@ -8,6 +8,8 @@ import Pacientes from './Pacientes/Pacientes';
 import PacienteCard from './Card/PacienteCard';
 import Perfil from './Perfil/Perfil';
 import Anamnese from './Anamnese/Anamnese';
+import AnamneseList from './Anamnese/AnamneseList';
+import AnamneseInformation from './Anamnese/AnamneseInformation';
 
 export {
     LoginPage,
@@ -20,4 +22,6 @@ export {
     PacienteCard,
     Perfil,
     Anamnese,
+    AnamneseList,
+    AnamneseInformation
 }

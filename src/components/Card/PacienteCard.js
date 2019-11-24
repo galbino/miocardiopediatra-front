@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: deepPurple[500],
   },
   menu: {
-    maxHeight: 48 * 4.5,
-    width: 200,
+    maxHeight: 60 * 4.5,
+    width: 240,
   }
 }));
 
@@ -29,7 +29,7 @@ export default function PacienteCard(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const { nome, id } = props;
-  const menuOptions = ["Visualizar Perfil"];
+  const menuOptions = ["Visualizar Perfil", "Visualizar Anamneses", "Criar Anamnese"];
   
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -39,11 +39,19 @@ export default function PacienteCard(props) {
     setAnchorEl(null);
   };
 
+  const handleAction = (e, option, history, id) => {
+    if (option === "Visualizar Perfil") {
+      return history.push('/perfil/' + id) 
+    } else if (option === "Visualizar Anamneses") {
+      return history.push('/anamneses/' + id) 
+    }
+  }
+
   return (
     <Paper className={classes.paper} elevation={2}>
       <Route render={({ history }) => (
         
-          <ListItem button className={classes.card} onClick={() => history.push('/anamnese/' + id)}>
+          <ListItem button className={classes.card} onClick={() => history.push('/anamneses/' + id)}>
             <ListItemAvatar>
               <Avatar aria-label="recipe" className={classes.avatar}>{nome.charAt(0).toUpperCase()}</Avatar>
             </ListItemAvatar>
@@ -61,7 +69,7 @@ export default function PacienteCard(props) {
                 className={classes.menu}
               >
                 {menuOptions.map(option => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={() => history.push('/perfil/' + id)}>
+                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={(e) => handleAction(e, option, history, id)}>
                     {option}
                   </MenuItem>
                 ))}

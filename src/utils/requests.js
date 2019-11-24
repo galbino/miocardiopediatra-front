@@ -39,6 +39,27 @@ export function PostData(type, data){
     });
   }
   
+  export function PatchData(type, data){
+    return new Promise((resolve, reject) => {
+      fetch(process.env.REACT_APP_BASE_URL + type, {
+        method: 'PATCH',
+        headers: new Headers({
+          'Content-type': 'application/json; charset=UTF-8',
+          'Authorization': Auth.isUserAuthenticated() ? Auth.getToken() : false,
+        }), 
+        body: JSON.stringify(data),
+      })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        resolve(responseJSON);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+    });
+  }
+  
 
   
 export function GetData(type){

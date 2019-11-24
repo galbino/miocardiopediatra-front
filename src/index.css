@@ -95,6 +95,7 @@ a {
   border-radius: 50px !important;
   margin-bottom: 1em !important;
   text-transform: capitalize !important;
+  width: fit-content;
 }
 
 .paciente-card {

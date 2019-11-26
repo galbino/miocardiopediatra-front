@@ -46,7 +46,6 @@ class Anamnese extends React.Component {
                     }
                     pacientes.push({id: item.id, name: item.name, label: item.name})
                 })
-                
                 this.setState({ listPacientes: pacientes, isLoading: false, paciente: paciente })
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
@@ -119,7 +118,7 @@ class Anamnese extends React.Component {
         let questions = this.state.minhas_anamneses[j].questions
         let q = {}
         questions.map((question, i) => {
-            q[i+1] = question.answer
+            q[i+1] = Number(question.answer)
         })
         let data = {
             questions: q
@@ -160,7 +159,7 @@ class Anamnese extends React.Component {
         let array = this.state.listPacientes;
         let info = { id: data.id, value: data.name, label: data.name }
         array.unshift(info);
-        this.setState({ listPacientes: array })
+        this.setState({ listPacientes: array, openModal: false, statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", })
     }
 
     handleContinueAnamnese = () => {
@@ -179,7 +178,7 @@ class Anamnese extends React.Component {
             })
         }
         let data = {
-            patient_id: this.state.paciente.id,
+            patient_id: this.state.paciente[0].id,
             template_id: this.state.anamnese.id,
             questions: this.state.questions
         };
@@ -241,7 +240,7 @@ class Anamnese extends React.Component {
             <React.Fragment>
                 <Modal className="modal-paciente" open={openModal} onClose={this.handleCloseModalPaciente} closeAfterTransition >
                     <Paper className="paper">
-                        <NewPaciente />
+                        <NewPaciente handleNewUser={this.handleNewUser} />
                     </Paper>
                 </Modal>
             

@@ -131,9 +131,9 @@ export default class NewPaciente extends React.Component {
                 this.setState({  statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
                 this.props.handleNewUser(response.data); // back precisa mandar { dados cadastrais }
             } else {
-                this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
+                this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning" })
             }
-        }).catch(err => console.log(err))
+        }).catch(err => this.setState({ statusSnack: true, displayMessage: "Falha ao conectar ao servidor.", variant: "error"}))
     }
 
     handleShowPassword = () => {

@@ -14,6 +14,7 @@ class Anamnese extends React.Component {
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
+            is_doctor: Auth.getRole(),
             pacient_id: props.match.params.id,
             listPacientes: [],
             paciente: null,
@@ -28,7 +29,7 @@ class Anamnese extends React.Component {
             displayMessage: "",
             statusSnack: false,
             variant: "",
-            my_anamnese: false,
+            my_anamnese: true,
             loading_anamneses: true,
             minhas_anamneses: [],
             my_questions: []
@@ -230,7 +231,7 @@ class Anamnese extends React.Component {
     }
 
     render(){
-        const { isAutenticated, paciente, anamnese, anamneses, openModal, loading_questions, listPacientes, listQuestions, loading_anamneses, my_anamnese, isLoading } = this.state;
+        const { isAutenticated, paciente, anamnese, anamneses, is_doctor, openModal, loading_questions, listPacientes, listQuestions, loading_anamneses, my_anamnese, isLoading } = this.state;
         if (!isAutenticated || isAutenticated === undefined){
             return (
                  <Redirect push to="/login" />
@@ -250,7 +251,8 @@ class Anamnese extends React.Component {
                     displayMessage={this.state.displayMessage}
                     variant={this.state.variant}
                 />
-                 <FormGroup row>
+                
+                <FormGroup row>
                     <FormControlLabel
                         control={
                             <Switch checked={my_anamnese} color="primary" onChange={this.handleMyAnamnese} value="checkedA" />
@@ -258,6 +260,8 @@ class Anamnese extends React.Component {
                         label="Minhas Anamneses"
                     />
                 </FormGroup>
+                
+                
 
                 {!my_anamnese ?  
                  <Fragment>

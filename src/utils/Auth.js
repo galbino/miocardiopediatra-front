@@ -3,6 +3,7 @@ class Auth {
     static authenticateUser (data) {
       localStorage.setItem('token', data.token.access_token)
       localStorage.setItem('id', data.id)
+      localStorage.setItem('is_doctor', data.is_doctor)
     }
   
     static authNotified () {
@@ -28,6 +29,7 @@ class Auth {
     static unauthenticateUser () {
       localStorage.removeItem('token')
       localStorage.removeItem('id')
+      localStorage.removeItem('is_doctor')
     }
    
     static getToken () {
@@ -36,6 +38,10 @@ class Auth {
 
     static getId () {
       return localStorage.getItem('id')
+    }
+
+    static getRole () {
+      return localStorage.getItem('is_doctor')
     }
   }
   

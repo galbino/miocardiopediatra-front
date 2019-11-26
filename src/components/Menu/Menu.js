@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, InputBase } from "@material-ui/core";
-import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend, MdChromeReaderMode } from 'react-icons/md';
+import { MdMenu, MdChevronLeft, MdHome, MdPerson, MdPeople, MdExitToApp, MdSearch, MdSend, MdChromeReaderMode, MdQuestionAnswer } from 'react-icons/md';
 import { Route } from 'react-router-dom';
 import Auth from '../../utils/Auth';
 
@@ -117,6 +117,7 @@ const useStyles = makeStyles(theme => ({
 export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const id = Auth.getId();
+  const is_doctor = Auth.getRole();
 
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -227,11 +228,19 @@ export default function PersistentDrawerLeft(props) {
                 </ListItem>
               )}
             />
-           
-           <Route render={({ history }) => (
+
+            <Route render={({ history }) => (
                 <ListItem button onClick={() => history.push('/myperfil/' + id)}>
                     <ListItemIcon><MdPerson size={30} /></ListItemIcon>
                     <ListItemText primary={"Perfil"}></ListItemText>
+                </ListItem>
+              )}
+            />
+
+            <Route render={({ history }) => (
+                <ListItem button onClick={() => history.push('/FAQ/')}>
+                    <ListItemIcon><MdQuestionAnswer size={30} /></ListItemIcon>
+                    <ListItemText primary={"FAQ"}></ListItemText>
                 </ListItem>
               )}
             />

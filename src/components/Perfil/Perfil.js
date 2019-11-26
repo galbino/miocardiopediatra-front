@@ -127,6 +127,7 @@ class Perfil extends React.Component {
             <React.Fragment>                   
                 <Paper className="profile-paper" elevation={3}>
                         <form>
+                            {}
                             <Grid className="grid-container" container>
                                 <Grid item xs>
                                     <div className={classes.wrapperCamera}>

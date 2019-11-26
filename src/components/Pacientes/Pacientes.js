@@ -74,7 +74,7 @@ class Pacientes extends React.Component {
         <List>
         <Grid container alignContent="center" alignItems="center" spacing={2}>
         {loading &&
-          <div style={{position: "relative", marginTop: "25%", left: "50%"}}>
+          <div style={{position: "relative", marginTop: "15%", left: "50%"}}>
             <CircularProgress />
           </div>
         }

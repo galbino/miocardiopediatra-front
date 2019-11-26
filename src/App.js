@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { LoginPage, HomePage, Signup, SignupPaciente, Pacientes, Perfil, Anamnese, AnamneseList, AnamneseInformation, PerfilMedico } from './components/components';
+import { LoginPage, HomePage, Signup, SignupPaciente, Pacientes, Perfil, Anamnese, AnamneseList, AnamneseInformation, PerfilMedico, FAQ } from './components/components';
 
 const App = () => (
     <React.Fragment>
@@ -17,6 +17,7 @@ const App = () => (
                 <Route path="/myperfil" component={PerfilMedico} />
                 <Route path="/signup/doctor" component={Signup} /> 
                 <Route path="/signup/pacient" component={SignupPaciente} /> 
+                <Route path="/FAQ" component={FAQ} />
             </Switch>
         </BrowserRouter>
     </React.Fragment>

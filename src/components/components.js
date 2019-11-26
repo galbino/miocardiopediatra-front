@@ -11,6 +11,7 @@ import Anamnese from './Anamnese/Anamnese';
 import AnamneseList from './Anamnese/AnamneseList';
 import AnamneseInformation from './Anamnese/AnamneseInformation';
 import PerfilMedico from './Perfil/PerfilMedico';
+import FAQ from './FAQ/FAQ'
 
 export {
     LoginPage,
@@ -25,5 +26,6 @@ export {
     Anamnese,
     AnamneseList,
     AnamneseInformation,
-    PerfilMedico
+    PerfilMedico,
+    FAQ
 }

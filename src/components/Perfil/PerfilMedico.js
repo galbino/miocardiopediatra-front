@@ -121,7 +121,7 @@ class PerfilMedico extends React.Component {
                     email: responseJSON.email === null ? "" : responseJSON.email,
                     cpf: responseJSON.cpf === null ? "" : responseJSON.cpf,
                     data_nasc: responseJSON.data_nasc === null ? "" : responseJSON.data_nasc,
-                    especialidade: responseJSON.especialidade === null ? "" : responseJSON.especialidade.name,
+                    especialidade: responseJSON.especialidade === null ? "" : responseJSON.especialidade.id,
                     crm: responseJSON.crm === null ? "" : responseJSON.crm,
                     sexo: responseJSON.sexo === null ? "" : responseJSON.sexo,
                     peso: responseJSON.peso === null ? "" : responseJSON.peso,
@@ -159,7 +159,7 @@ class PerfilMedico extends React.Component {
             height: this.state.data.altura,
             weigth: this.state.data.peso,
             obs: this.state.data.observacao,
-            speciality_id: this.state.data.especialidade,
+            specialty_id: this.state.data.especialidade,
         }
         PatchData("/profile", data).then(response => {
             if (response.errors.length === 0) {

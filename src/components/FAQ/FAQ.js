@@ -319,7 +319,7 @@ export default class FAQ extends React.Component {
                                                                                 <Button
                                                                                     variant="contained"
                                                                                     color="primary"
-                                                                                    onClick={() => this.handleResponder(pergunta.id)}
+                                                                                    onClick={() => this.handleResponder(index, pergunta.id)}
                                                                                 >
                                                                                     Responder
                                                                                 </Button>

@@ -516,22 +516,27 @@ class PerfilPaciente extends React.Component {
 
                             <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
+                        {data.exams !== undefined  &&
+                            <React.Fragment>
+                            <Typography variant="h5" gutterBottom>Listagem de Exames</Typography>
+                            <List>
+                                {data.exams !== 0 && data.exams.map((item, index) => {
+                                    return (
+                                        <Paper key={index} style={{marginBottom: "1em"}} elevation={2}>
+                                            
+                                                <ListItem style={{padding: "1em"}}>
+                                                    <Typography variant="subtitle2">{index + 1} - {item.name}</Typography>
+                                                </ListItem>
+                                            
+                                        </Paper>
+                                    
+                                    )
+                                })}
+                            </List>
+                            </React.Fragment>
+                        }
                     </Paper>
-                    <List>
-                            {data.exams !== undefined && data.exams !== 0 && data.exams.map((item, index) => {
-                                return (
-                                    <Paper key={index} style={{marginBottom: "1em"}} elevation={2}>
-                                        
-                                            <ListItem style={{padding: "1em"}}>
-                                                <Typography variant="subtitle2">{index + 1} - {item.name}</Typography>
-                                            </ListItem>
-                                        
-                                    </Paper>
-                                
-                                )
-                            })}
-                        
-                    </List>
+                   
             </React.Fragment>
         )
 

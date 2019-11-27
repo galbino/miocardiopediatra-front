@@ -54,6 +54,12 @@ export default class FAQ extends React.Component {
         this.setState({ list_respondidas: list_respondidas })
     }
 
+    // handleDelete = (e, j) => {
+    //     e.stopPropagation()
+    //     let list_respondidas = this.state.list_respondidas
+    //     console.log(list_respondidas)
+    // }
+
     handleConfirmarEdit = (e, j, pergunta_id) => {
         if (this.state.resposta === "") return  this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning"})
         let data = {
@@ -161,7 +167,7 @@ export default class FAQ extends React.Component {
                                     <Typography variant="h5" gutterBottom align="center">Listagem de Perguntas</Typography>
                                 </div>
                                 {list_respondidas.map((pergunta, j) => {
-                                    return <React.Fragment>
+                                    return <React.Fragment key={j}>
                                                <Paper key={j} style={{marginTop: "1em"}} elevation={2}>
                                                     <ExpansionPanel>
                                                         <ExpansionPanelSummary
@@ -204,9 +210,14 @@ export default class FAQ extends React.Component {
                                                             </Grid>
                                                             <div style={{display: "flex", justifyContent: "space-between"}}>
                                                                     {this.state.is_doctor == 1 && 
-                                                                        <Button style={{width: "8em"}} color="primary" variant="contained" onClick={(e) => this.handleEdit(e, j)}>
-                                                                            {pergunta.isEditing ? "Cancelar" : "Editar"}
-                                                                        </Button>
+                                                                        <React.Fragment>
+                                                                            <Button style={{width: "8em"}} color="primary" variant="contained" onClick={(e) => this.handleEdit(e, j)}>
+                                                                                {pergunta.isEditing ? "Cancelar" : "Editar"}
+                                                                            </Button>
+                                                                            {/* <Button style={{width: "8em"}} color="secondary" variant="contained" onClick={(e) => this.handleDelete(e, j)}>
+                                                                                Deletar
+                                                                            </Button> */}
+                                                                        </React.Fragment>
                                                                     }
                                                                     {pergunta.isEditing &&
                                                                         <Button style={{width: "8em", background: "green", color: "#FFF"}} variant="contained" onClick={(e) => this.handleConfirmarEdit(e, j, pergunta.id)}>
@@ -274,7 +285,7 @@ export default class FAQ extends React.Component {
                                     <Typography variant="h5" gutterBottom align="center">Perguntas não respondidas</Typography>
                                 </div>
                                 {list_nao_respondidas.map((pergunta, index) => {
-                                    return <React.Fragment>
+                                    return <React.Fragment key={index}>
                                                 
                                                <Paper key={index} style={{marginTop: "1em"}} elevation={2}>
                                                     <ExpansionPanel>

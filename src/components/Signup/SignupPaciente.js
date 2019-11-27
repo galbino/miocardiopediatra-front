@@ -12,6 +12,7 @@ class Signup extends React.Component {
         super(props)
         this.state = {
             nome: "",
+            email: "",
             emailResponsavel: "",
             cpfResponsavel: "",
             dataNascimento: "", 
@@ -64,6 +65,7 @@ class Signup extends React.Component {
             touched: {
                 nome: false,
                 emailResponsavel: false,
+                email: false,
                 cpfResponsavel: false,
                 dataNascimento: false,
                 altura: false,
@@ -106,15 +108,16 @@ class Signup extends React.Component {
     }
 
     handleConfirmar = (e) => {
-        console.log(this.state)
+        
         e.preventDefault();
-        let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, observacoes, isDoctor  } = this.state;
+        let { nome, email, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, observacoes, isDoctor  } = this.state;
         // if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel || senha === "" || confirmarSenha === "" ) {
         //     return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
         // } 
         dataNascimento = this.FormataStringData(dataNascimento);
         let data = {
             nome: nome,
+            email: email,
             emailResponsavel: emailResponsavel,
             cpfResponsavel: cpfResponsavel,
             dataNascimento: dataNascimento,
@@ -136,9 +139,9 @@ class Signup extends React.Component {
             if (response.errors.length === 0) {
                 this.setState({  redirect: "/login", statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
             } else {
-                this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
+                this.setState({ statusSnack: true, displayMessage: response.erros[0].message, variant: "warning" })
             }
-        }).catch(err => console.log(err))
+        }).catch(err => this.setState({ statusSnack: true, displayMessage: "Falha ao conectar com o servidor", variant: "error" }))
     }
 
     handleShowPassword = () => {
@@ -162,6 +165,7 @@ class Signup extends React.Component {
     validateFields = (data) => {
         return {
             nome: data.nome === "" || data.nome.length < 5,
+            email: data.email === "" || !data.email.includes("@") || !data.email.includes("."),
             emailResponsavel: data.emailResponsavel === "" || !data.emailResponsavel.includes("@") || !data.emailResponsavel.includes("."),
             cpfResponsavel: data.cpfResponsavel === "" || data.cpfResponsavel.includes("_"),
             dataNascimento: data.dataNascimento === "" || data.dataNascimento.includes("_"),
@@ -184,9 +188,10 @@ class Signup extends React.Component {
                 <Redirect to={this.state.redirect} />
             );    
         }
-        const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
+        const { nome, email, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
         let data = {
             nome: nome,
+            email: email,
             emailResponsavel: emailResponsavel,
             cpfResponsavel: cpfResponsavel,
             dataNascimento: dataNascimento,
@@ -236,6 +241,20 @@ class Signup extends React.Component {
                                         value={nome}
                                         fullWidth
                                         label="Nome Completo"
+                                        variant="outlined"
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid className="grid-container" container>
+                                <Grid item xs>
+                                    <TextField 
+                                        onBlur={this.handleBlur("email")}
+                                        error={shouldMarkError("email")}
+                                        name="email"
+                                        value={email}
+                                        fullWidth
+                                        label="Email"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />

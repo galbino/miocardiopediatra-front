@@ -11,6 +11,7 @@ export default class NewPaciente extends React.Component {
         super(props)
         this.state = {
             nome: "",
+            email: "",
             emailResponsavel: "",
             cpfResponsavel: "",
             dataNascimento: "", 
@@ -62,6 +63,7 @@ export default class NewPaciente extends React.Component {
 
             touched: {
                 nome: false,
+                email: false,
                 emailResponsavel: false,
                 cpfResponsavel: false,
                 dataNascimento: false,
@@ -102,13 +104,14 @@ export default class NewPaciente extends React.Component {
 
     handleConfirmar = (e) => {
         e.preventDefault();
-        let { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
-        if (nome === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel === "" || senha === "" || confirmarSenha === "" ) {
+        let { nome, email, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, isDoctor  } = this.state;
+        if (nome === "" || email === "" || emailResponsavel === "" ||  cpfResponsavel === "" || dataNascimento === "" || altura === "" || peso === "" || sexo === "" || estado === "" || cidade === "" || bairro === "" || telefonePaciente === "" || telefoneResponsavel === "" || senha === "" || confirmarSenha === "" ) {
             return this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning" })
         } 
         dataNascimento = this.FormataStringData(dataNascimento);
         let data = {
             nome: nome,
+            email: email,
             emailResponsavel: emailResponsavel,
             cpfResponsavel: cpfResponsavel,
             dataNascimento: dataNascimento,
@@ -128,7 +131,7 @@ export default class NewPaciente extends React.Component {
         
         PostData("/signup", data).then(response => {
             if (response.errors.length === 0) {
-                this.setState({  statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
+                this.setState({  statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", email: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
                 this.props.handleNewUser(response.data); // back precisa mandar { dados cadastrais }
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning" })
@@ -157,6 +160,7 @@ export default class NewPaciente extends React.Component {
     validateFields = (data) => {
         return {
             nome: data.nome === "" || data.nome.length < 5,
+            email: data.email === "" || !data.email.includes("@") || !data.email.includes("."),
             emailResponsavel: data.emailResponsavel === "" || !data.emailResponsavel.includes("@") || !data.emailResponsavel.includes("."),
             cpfResponsavel: data.cpfResponsavel === "" || data.cpfResponsavel.includes("_"),
             dataNascimento: data.dataNascimento === "" || data.dataNascimento.includes("_"),
@@ -174,9 +178,10 @@ export default class NewPaciente extends React.Component {
      }
 
     render(){
-        const { nome, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
+        const { nome, email, emailResponsavel, cpfResponsavel, dataNascimento, altura, peso, sexo, estado, cidade, bairro, telefonePaciente, telefoneResponsavel, senha, confirmarSenha, observacoes, showPassword, showConfirmPassword } = this.state;
         let data = {
             nome: nome,
+            email: email,
             emailResponsavel: emailResponsavel,
             cpfResponsavel: cpfResponsavel,
             dataNascimento: dataNascimento,
@@ -219,6 +224,20 @@ export default class NewPaciente extends React.Component {
                                         value={nome}
                                         fullWidth
                                         label="Nome Completo"
+                                        variant="outlined"
+                                        onChange={(e) => this.handleChange(e)}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid className="grid-container" spacing={2} container>
+                                <Grid item xs>
+                                    <TextField 
+                                        onBlur={this.handleBlur("email")}
+                                        error={shouldMarkError("email")}
+                                        name="email"
+                                        value={email}
+                                        fullWidth
+                                        label="Email"
                                         variant="outlined"
                                         onChange={(e) => this.handleChange(e)}
                                     />

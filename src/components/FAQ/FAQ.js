@@ -19,7 +19,7 @@ export default class FAQ extends React.Component {
             isLoading: true,
             question: "",
             resposta: "",
-            
+            isEditing: false,
         }
     }
 
@@ -45,6 +45,33 @@ export default class FAQ extends React.Component {
     handleLogout = () => {
         Auth.unauthenticateUser();
         this.setState({ isAutenticated: false })
+    }
+
+    handleEdit = (e, j) => {
+        e.stopPropagation()
+        let list_respondidas = this.state.list_respondidas
+        list_respondidas[j].isEditing = !list_respondidas[j].isEditing
+        this.setState({ list_respondidas: list_respondidas })
+    }
+
+    handleConfirmarEdit = (e, j, pergunta_id) => {
+        if (this.state.resposta === "") return  this.setState({ statusSnack: true, displayMessage: "Preencha todos os campos.", variant: "warning"})
+        let data = {
+            answer: this.state.resposta
+        }
+        PatchData("/faq/" + pergunta_id, data).then(response => {
+            if (response.errors.length === 0) {
+                this.setState({
+                    statusSnack: true,
+                    displayMessage: "Resposta atualizada com sucesso.", 
+                    variant: "success",
+                    isEditing: false,
+                    resposta: ""
+                })
+            } else {
+                this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
+            }
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha ao se conectar com o servidor.", variant: "error" }));
     }
 
     handleMyQuestions = () => {
@@ -82,7 +109,7 @@ export default class FAQ extends React.Component {
             if (response.errors.length === 0) {
                 this.setState({
                     statusSnack: true,
-                    displayMessage: "Pergunta criada com sucesso.", 
+                    displayMessage: "Pergunta respondida com sucesso.", 
                     variant: "success",
                     resposta: ""
                 })
@@ -146,14 +173,51 @@ export default class FAQ extends React.Component {
                                                         <Typography style={{flexBasis: "33.33%", flexShrink: "0", color: "grey"}}>{pergunta.creation_date}</Typography>
 
                                                         </ExpansionPanelSummary>
-                                                        <ExpansionPanelDetails>
+                                                        <ExpansionPanelDetails style={{display: "block"}}>
                                                             <Grid container alignContent="center" alignItems="center">
                                                                 <Grid item xs>
-                                                                    <Typography style={{flexBasis: "33.33%", flexShrink: "0", color: "grey"}}>{pergunta.question}</Typography>
-                                                                    <Typography variant="subtitle2" gutterBottom>{pergunta.answer}</Typography>
+                                                                    <Typography style={{flexBasis: "33.33%", flexShrink: "0", color: "grey"}} gutterBottom>{pergunta.question}</Typography>
+                                                                    
+                                                                    {!pergunta.isEditing ? 
+                                                                        <Typography variant="subtitle2" gutterBottom>
+                                                                            {pergunta.answer}
+                                                                        </Typography> 
+                                                                    :
+                                                                        <div style={{marginBottom: "1em"}}>
+                                                                            <TextField
+                                                                                name="resposta"
+                                                                                variant="outlined"
+                                                                                label="Editar Resposta"
+                                                                                fullWidth
+                                                                                multiline
+                                                                                rows="3"
+                                                                                value={this.state.resposta}
+                                                                                onChange={(e) => this.handleChange(e)}
+                                                                            />
+
+                                                                        </div>
+                                                                        
+
+                                                                        
+                                                                    }
                                                                 </Grid>
                                                             </Grid>
+                                                            <div style={{display: "flex", justifyContent: "space-between"}}>
+                                                                    {this.state.is_doctor == 1 && 
+                                                                        <Button style={{width: "8em"}} color="primary" variant="contained" onClick={(e) => this.handleEdit(e, j)}>
+                                                                            {pergunta.isEditing ? "Cancelar" : "Editar"}
+                                                                        </Button>
+                                                                    }
+                                                                    {pergunta.isEditing &&
+                                                                        <Button style={{width: "8em", background: "green", color: "#FFF"}} variant="contained" onClick={(e) => this.handleConfirmarEdit(e, j, pergunta.id)}>
+                                                                            Confirmar
+                                                                        </Button>
+                                                                    }
+                                                             </div>
+                                                                   
+                                                            
                                                         </ExpansionPanelDetails>
+                                                        
                                                     </ExpansionPanel>
                                                 </Paper>
                                             </React.Fragment>

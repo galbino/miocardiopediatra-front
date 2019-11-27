@@ -31,7 +31,7 @@ class AnamneseInformation extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning" })
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
     }
 
     handleClose = () => {

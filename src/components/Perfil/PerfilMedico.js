@@ -42,7 +42,7 @@ const styles = {
     }
 }
 
-class Perfil extends React.Component {
+class PerfilMedico extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -471,4 +471,4 @@ class Perfil extends React.Component {
     }
 }
 
-export default withStyles(styles) (Perfil);
+export default withStyles(styles) (PerfilMedico);

@@ -34,7 +34,14 @@ class AnamneseRate extends React.Component {
     }
 
     handleYes = () => {
-        PostData("/user/" + this.state.user_id + "/exam").then(response => {
+        let array = []        
+        this.state.exams.map(exam => {
+            array.push(exam.id)
+        })
+        let data = {
+            exam_list: array
+        }
+        PostData("/user/" + this.state.user_id + "/exam", data).then(response => {
             if (response.errors.length === 0) {
                 this.setState({ redirect: true })
             } else {

@@ -106,7 +106,7 @@ export default class FAQ extends React.Component {
         }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor.", variant: "error" }));
     }
 
-    handleResponder = (pergunta_id) => {
+    handleResponder = (index, pergunta_id) => {
         if (this.state.resposta === "") return this.setState({ statusSnack: true, displayMessage: "Preencha o campo.", variant: "warning"})
         let data = {
             answer: this.state.resposta
@@ -117,7 +117,7 @@ export default class FAQ extends React.Component {
                     statusSnack: true,
                     displayMessage: "Pergunta respondida com sucesso.", 
                     variant: "success",
-                    resposta: ""
+                    resposta: "",
                 })
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
@@ -211,9 +211,9 @@ export default class FAQ extends React.Component {
                                                             <div style={{display: "flex", justifyContent: "space-between"}}>
                                                                     {this.state.is_doctor == 1 && 
                                                                         <React.Fragment>
-                                                                            <Button style={{width: "8em"}} color="primary" variant="contained" onClick={(e) => this.handleEdit(e, j)}>
+                                                                            {/* <Button style={{width: "8em"}} color="primary" variant="contained" onClick={(e) => this.handleEdit(e, j)}>
                                                                                 {pergunta.isEditing ? "Cancelar" : "Editar"}
-                                                                            </Button>
+                                                                            </Button> */}
                                                                             {/* <Button style={{width: "8em"}} color="secondary" variant="contained" onClick={(e) => this.handleDelete(e, j)}>
                                                                                 Deletar
                                                                             </Button> */}

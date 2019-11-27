@@ -280,7 +280,7 @@ class Anamnese extends React.Component {
                         control={
                             <Switch checked={my_anamnese} color="primary" onChange={this.handleMyAnamnese} value="checkedA" />
                         }
-                        label="Minhas Anamneses"
+                        label="Listagem de Anamneses"
                     />
                 </FormGroup>
                 

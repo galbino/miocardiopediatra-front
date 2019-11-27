@@ -2,7 +2,7 @@ import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
 import { Menu } from '../components';
-import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button, MenuItem, Typography } from '@material-ui/core';
+import { withStyles, Grid, TextField, Avatar, IconButton, Paper, Button, List, ListItem, MenuItem, Typography } from '@material-ui/core';
 import { MdCameraAlt, MdLockOutline } from 'react-icons/md';
 import InputMask from 'react-input-mask';
 import { GetData, PatchData, makeCancelable } from '../../utils/requests';
@@ -42,7 +42,7 @@ const styles = {
     }
 }
 
-class Perfil extends React.Component {
+class PerfilPaciente extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -133,7 +133,7 @@ class Perfil extends React.Component {
                     estado: responseJSON.estado === null ? "" : responseJSON.estado,
                     cidade: responseJSON.cidade === null ? "" : responseJSON.cidade,
                     bairro: responseJSON.bairro === null ? "" : responseJSON.bairro,
-                    bairro: responseJSON.obs === null ? "" : responseJSON.obs,
+                    exams: responseJSON.exames === null ? "" : responseJSON.exames,
                 }
                 this.setState({ data: data })
             } else {
@@ -156,7 +156,7 @@ class Perfil extends React.Component {
             crm: this.state.data.crm,
             phone_resp: this.state.data.telefone,
             height: this.state.data.altura,
-            weigth: this.state.data.peso,
+            weight: this.state.data.peso,
             obs: this.state.data.obs,
             cpf: this.state.data.cpf
         }
@@ -251,7 +251,7 @@ class Perfil extends React.Component {
                                 <Grid className="grid-item" item xs>
                                    
                                             <TextField
-                                                                                               
+                                                         InputLabelProps={{ shrink: true }}                                    
                                                 // error={shouldMarkError("cpf")}
                                                 label="Email Responsável"
                                                 name="email_resp"
@@ -277,7 +277,7 @@ class Perfil extends React.Component {
                                       
                                 </Grid>
                                 <Grid  item xs>
-                                    <InputMask mask="999.999.999-99"  InputLabelProps={{ shrink: true }} value={data.tel_resp || ''}> 
+                                    <InputMask mask="(99) 99999-9999"  InputLabelProps={{ shrink: true }} value={data.tel_resp || ''}> 
                                         {inputProps => (
                                             <TextField
                                                 {...inputProps}   
@@ -517,7 +517,21 @@ class Perfil extends React.Component {
                             <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
                         </form>
                     </Paper>
-            
+                    <List>
+                            {data.exams !== undefined && data.exams !== 0 && data.exams.map((item, index) => {
+                                return (
+                                    <Paper key={index} style={{marginBottom: "1em"}} elevation={2}>
+                                        
+                                            <ListItem style={{padding: "1em"}}>
+                                                <Typography variant="subtitle2">{index + 1} - {item.name}</Typography>
+                                            </ListItem>
+                                        
+                                    </Paper>
+                                
+                                )
+                            })}
+                        
+                    </List>
             </React.Fragment>
         )
 
@@ -529,4 +543,4 @@ class Perfil extends React.Component {
     }
 }
 
-export default withStyles(styles) (Perfil);
+export default withStyles(styles) (PerfilPaciente);

@@ -263,18 +263,21 @@ class PerfilPaciente extends React.Component {
                                       
                                 </Grid>
                                 <Grid className="grid-item" item xs>
-                                   
+                                    <InputMask mask="999.999.999-99" onChange={(e) => this.handleChange(e)} InputLabelProps={{ shrink: true }} value={data.cpf_resp || ''}> 
+                                        {inputProps => (
                                             <TextField
+                                                {...inputProps}  
                                                                                                
                                                 // error={shouldMarkError("cpf")}
                                                 label="CPF Responsável"
                                                 name="cpf_resp"
-                                                value={data.cpf_resp}
+                                                
                                                 type="text"
                                                 variant="outlined"
                                                 fullWidth  
                                             />
-                                      
+                                        )}
+                                    </InputMask>
                                 </Grid>
                                 <Grid  item xs>
                                     <InputMask mask="(99) 99999-9999"  InputLabelProps={{ shrink: true }} value={data.tel_resp || ''}> 

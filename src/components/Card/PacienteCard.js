@@ -29,7 +29,7 @@ export default function PacienteCard(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const { nome, id } = props;
-  const menuOptions = ["Visualizar Perfil", "Visualizar Anamneses", "Criar Anamnese"];
+  const menuOptions = ["Visualizar Perfil", "Visualizar Anamneses"];
   
   const handleClick = event => {
     setAnchorEl(event.currentTarget);

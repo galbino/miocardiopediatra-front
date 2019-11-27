@@ -30,7 +30,7 @@ class HomePage extends React.Component {
                 <div>
                    <Paper className="profile-paper">
                         <Typography variant="h6" align="center" gutterBottom>
-                            Esta aplicação tem como objetivo servir para a avalição da disciplina Engenharia de Software 2019.2
+                            Esta aplicação tem como objetivo servir para a avaliação da disciplina Engenharia de Software 2019.2
                         </Typography>
                         <Typography component="div" align="center" gutterBottom>
 

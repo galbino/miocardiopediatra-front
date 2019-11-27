@@ -145,9 +145,9 @@ class Signup extends React.Component {
             if (response.errors.length === 0) {
                 this.setState({ redirect: "/login", statusSnack: true, displayMessage: "Cadastrado com sucesso.", variant: "success", email: "", cpf: "", dataNascimento: "", telefone: "", especialidade: "", crm: "", estado: "", cidade: "", bairro: "", senha: "", confirmarSenha: ""  })
             } else {
-                this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro, tente novamente.", variant: "error" })
+                this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "error" })
             }
-        }).catch(err => console.log(err))
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
     }
 
 

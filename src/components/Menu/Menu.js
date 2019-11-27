@@ -167,7 +167,7 @@ export default function PersistentDrawerLeft(props) {
           <Typography className={classes.title} variant="h6" noWrap>
               {props.title}
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <MdSearch size={20} />
             </div>
@@ -185,7 +185,7 @@ export default function PersistentDrawerLeft(props) {
           </div>
           <IconButton color="inherit" onClick={(e) => handleSubmit(e, value)}>
             <MdSend />
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -213,29 +213,59 @@ export default function PersistentDrawerLeft(props) {
               )}
             />
             
-            <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/pacientes')}>
-                  <ListItemIcon><MdPeople size={30} /></ListItemIcon>
-                  <ListItemText primary={"Pacientes"}></ListItemText>
-                </ListItem>
-              )}
-            />
 
-            <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/anamnese/' + id)}>
-                    <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
-                    <ListItemText primary={"Anamnese"}></ListItemText>
-                </ListItem>
-              )}
-            />
+            {is_doctor == 1 &&
+              <React.Fragment>
+                <Route render={({ history }) => (
+                    <ListItem button onClick={() => history.push('/pacientes')}>
+                      <ListItemIcon><MdPeople size={30} /></ListItemIcon>
+                      <ListItemText primary={"Pacientes"}></ListItemText>
+                    </ListItem>
+                  )}
+                />
 
-            <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/myperfil/' + id)}>
-                    <ListItemIcon><MdPerson size={30} /></ListItemIcon>
-                    <ListItemText primary={"Perfil"}></ListItemText>
-                </ListItem>
-              )}
-            />
+                <Route render={({ history }) => (
+                    <ListItem button onClick={() => history.push('/anamnese/' + id)}>
+                        <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
+                        <ListItemText primary={"Anamnese"}></ListItemText>
+                    </ListItem>
+                  )}
+                />
+
+                
+              </React.Fragment>
+            }
+
+            {is_doctor == 1 ?
+              
+                  <Route render={({ history }) => (
+                          <ListItem button onClick={() => history.push('/profile/' + id)}>
+                              <ListItemIcon><MdPerson size={30} /></ListItemIcon>
+                              <ListItemText primary={"Perfil"}></ListItemText>
+                          </ListItem>
+                        )}
+                  />
+            :
+               <React.Fragment>
+                  {/* <Route render={({ history }) => (
+                      <ListItem button onClick={() => history.push('/myanamneses/' + id)}>
+                          <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
+                          <ListItemText primary={"Anamnese"}></ListItemText>
+                      </ListItem>
+                    )}
+                  /> */}
+
+                  <Route render={({ history }) => (
+                      <ListItem button onClick={() => history.push('/myprofile/' + id)}>
+                          <ListItemIcon><MdPerson size={30} /></ListItemIcon>
+                          <ListItemText primary={"Perfil"}></ListItemText>
+                      </ListItem>
+                    )}
+                  />
+                </React.Fragment>
+            }
+
+      
 
             <Route render={({ history }) => (
                 <ListItem button onClick={() => history.push('/FAQ/')}>

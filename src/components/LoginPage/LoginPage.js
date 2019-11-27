@@ -42,7 +42,7 @@ class LoginPage extends React.Component {
             } else {
                 this.setState({ displayMessage: "Erro ao conectar, tente novamente", variant: "warning", statusSnack: true, loading: false })
             }
-        }).catch(err => this.setState({ displayMessage: "Ocorreu um erro.", variant: "error", statusSnack: true, loading: false }))
+        }).catch(err => this.setState({ displayMessage: " erro.", variant: "error", statusSnack: true, loading: false }))
     }
 
 

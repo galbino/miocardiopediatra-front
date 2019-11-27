@@ -10,7 +10,10 @@ import Perfil from './Perfil/Perfil';
 import Anamnese from './Anamnese/Anamnese';
 import AnamneseList from './Anamnese/AnamneseList';
 import AnamneseInformation from './Anamnese/AnamneseInformation';
+import AnamnesePacient from './Anamnese/AnamnesePacient';
+import AnamneseRate from './Anamnese/AnamneseRate';
 import PerfilMedico from './Perfil/PerfilMedico';
+import PerfilPaciente from './Perfil/PerfilPaciente';
 import FAQ from './FAQ/FAQ'
 
 export {
@@ -26,6 +29,9 @@ export {
     Anamnese,
     AnamneseList,
     AnamneseInformation,
+    AnamnesePacient,
+    AnamneseRate,
     PerfilMedico,
+    PerfilPaciente,
     FAQ
 }

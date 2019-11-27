@@ -2,6 +2,8 @@ import React from 'react';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
 import { Menu } from '../components';
+import { Paper, Typography } from '@material-ui/core';
+import Image from '../logo-miocardio.png'
 
 class HomePage extends React.Component {
     constructor(props){
@@ -26,7 +28,18 @@ class HomePage extends React.Component {
        
         const content = (
                 <div>
-                   Sou a HomePage :)
+                   <Paper className="profile-paper">
+                        <Typography variant="h6" align="center" gutterBottom>
+                            Esta aplicação tem como objetivo servir para a avalição da disciplina Engenharia de Software 2019.2
+                        </Typography>
+                        <Typography component="div" align="center" gutterBottom>
+
+                            <img width="500px" alt="front-img" src={Image}></img>
+                        </Typography>
+                        
+
+
+                   </Paper>
                </div>
         )
 

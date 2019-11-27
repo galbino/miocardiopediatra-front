@@ -46,6 +46,7 @@ class Perfil extends React.Component {
         super(props)
         this.state = {
             isAutenticated: Auth.isUserAuthenticated(),
+            is_doctor: Auth.getRole(),
             user_id: props.match.params.id,
             data: {
                 name: "",
@@ -115,7 +116,7 @@ class Perfil extends React.Component {
 
     render(){
         const { classes } = this.props
-        const  { isAutenticated, data, user_id } = this.state;
+        const  { isAutenticated, data, user_id, is_doctor } = this.state;
         
         if (!isAutenticated || isAutenticated === undefined){
             return (
@@ -124,10 +125,11 @@ class Perfil extends React.Component {
         }
 
         const content = (
-            <React.Fragment>                   
+            <React.Fragment>          
+                {is_doctor == 1 ? 
+
                 <Paper className="profile-paper" elevation={3}>
                         <form>
-                            {}
                             <Grid className="grid-container" container>
                                 <Grid item xs>
                                     <div className={classes.wrapperCamera}>
@@ -360,9 +362,12 @@ class Perfil extends React.Component {
 
                             </div> */}
 
-                            <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button>
+                            {/* <Button style={{float: "right"}} variant="contained" color="primary" onClick={(e) => this.handleConfirmar(e)}>Confirmar</Button> */}
                         </form>
                     </Paper>
+                    : 
+                    "a"
+                    }
             </React.Fragment>
         )
 

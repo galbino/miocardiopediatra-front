@@ -32,7 +32,11 @@ class Anamnese extends React.Component {
             my_anamnese: true,
             loading_anamneses: true,
             minhas_anamneses: [],
-            my_questions: []
+            my_questions: [], 
+            exams: null,
+            miocardiopatia_rate: null,
+            miocardite_rate: null,
+            continue_anamnese: false,
         }
     }
 
@@ -51,7 +55,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
         
         GetData("/anamnese/template").then(response => {
             if (response.errors.length === 0){
@@ -63,7 +67,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
 
         GetData("/anamnese").then(response => {
             if (response.errors.length === 0){
@@ -71,7 +75,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
        
         
     }
@@ -84,7 +88,7 @@ class Anamnese extends React.Component {
                 } else {
                     this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
                 }
-            }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+            }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
         }
     }
 
@@ -137,7 +141,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
     }
 
     handleAnamneseChange = (e) => {
@@ -153,7 +157,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
     }
 
     handleNewUser = (data) => {
@@ -179,22 +183,30 @@ class Anamnese extends React.Component {
             })
         }
         let data = {
-            patient_id: this.state.paciente[0].id,
+            patient_id: Array.isArray(this.state.paciente) ? this.state.paciente[0].id : this.state.paciente.id,
             template_id: this.state.anamnese.id,
             questions: this.state.questions
         };
-        
         PostData("/anamnese", data).then(response => {
             if (response.errors.length === 0) {
                 this.setState({
                     statusSnack: true,
                     displayMessage: "Anamnese cadastrada com sucesso.", 
-                    variant: "success"
+                    variant: "success", 
+                    exams: response.data.exams,
                 })
+                if (Number(response.data.miocardiopatia_rate) >= 0.75 || Number(response.data.miocardite_rate) >= 0.75){
+                    this.setState({    
+                        miocardiopatia_rate: Number(response.data.miocardiopatia_rate),
+                        miocardite_rate: Number(response.data.miocardite_rate),
+                        continue_anamnese: true,
+                    })
+                }
+
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
         
     }
 
@@ -208,7 +220,7 @@ class Anamnese extends React.Component {
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning"})
             }
-        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Ocorreu um erro.", variant: "error" }));
+        }).catch(() => this.setState({ statusSnack: true, displayMessage: "Falha de conexão com o servidor", variant: "error" }));
     }
 
     handleMyAnamnese = () => {
@@ -237,6 +249,17 @@ class Anamnese extends React.Component {
                  <Redirect push to="/login" />
             );    
         } 
+
+        if (this.state.continue_anamnese) {
+            return (
+                <Redirect to={{ pathname: "/anamnese-rate", state: { exams: this.state.exams, 
+                                                                     miocardiopatia_rate: this.state.miocardiopatia_rate,
+                                                                     miocardite_rate: this.state.miocardiopatia_rate,
+                                                                     user_id: this.state.paciente.id,
+                                                                     user_name: this.state.paciente.name
+                                                                    }}} />
+            )
+        }
         const content = (
             <React.Fragment>
                 <Modal className="modal-paciente" open={openModal} onClose={this.handleCloseModalPaciente} closeAfterTransition >
@@ -339,6 +362,7 @@ class Anamnese extends React.Component {
                                 </Button>
                             </div>
                         }
+
                     
                 
                     </Fragment>
@@ -415,9 +439,6 @@ class Anamnese extends React.Component {
                                                             </div>
                                                         }
                                                         
-                                                 
-                                                        
-
                                                       
                                                     </Grid>
                                                 </Grid>

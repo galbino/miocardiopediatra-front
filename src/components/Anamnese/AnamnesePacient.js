@@ -8,7 +8,7 @@ import { PostData, GetData } from '../../utils/requests';
 import SnackBar from "../../utils/Snackbar";
 import { Route } from 'react-router-dom';
 
-class AnamneseList extends React.Component {
+class AnamnesePacient extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -104,4 +104,4 @@ class AnamneseList extends React.Component {
 
 }
 
-export default AnamneseList;
+export default AnamnesePacient;

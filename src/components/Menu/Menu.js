@@ -207,7 +207,7 @@ export default function PersistentDrawerLeft(props) {
         <Divider />
         <List>
             <Route render={({ history }) => (
-                <ListItem id="home" button onClick={() => history.push('/home')}>
+                <ListItem id="homepage" button onClick={() => history.push('/home')}>
                   <ListItemIcon><MdHome size={30} /></ListItemIcon>
                   <ListItemText primary={"Homepage"}></ListItemText>
                 </ListItem>

@@ -152,6 +152,7 @@ export default function PersistentDrawerLeft(props) {
       >
         <Toolbar>
           <IconButton
+            id="menu"
             color="inherit"
             aria-label="open drawer"
             //className={classes.menuButton}
@@ -206,7 +207,7 @@ export default function PersistentDrawerLeft(props) {
         <Divider />
         <List>
             <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/home')}>
+                <ListItem id="home" button onClick={() => history.push('/home')}>
                   <ListItemIcon><MdHome size={30} /></ListItemIcon>
                   <ListItemText primary={"Homepage"}></ListItemText>
                 </ListItem>
@@ -217,7 +218,7 @@ export default function PersistentDrawerLeft(props) {
             {is_doctor == 1 &&
               <React.Fragment>
                 <Route render={({ history }) => (
-                    <ListItem button onClick={() => history.push('/pacientes')}>
+                    <ListItem id="pacientes" button onClick={() => history.push('/pacientes')}>
                       <ListItemIcon><MdPeople size={30} /></ListItemIcon>
                       <ListItemText primary={"Pacientes"}></ListItemText>
                     </ListItem>
@@ -225,7 +226,7 @@ export default function PersistentDrawerLeft(props) {
                 />
 
                 <Route render={({ history }) => (
-                    <ListItem button onClick={() => history.push('/anamnese/' + id)}>
+                    <ListItem id="anamnese" button onClick={() => history.push('/anamnese/' + id)}>
                         <ListItemIcon><MdChromeReaderMode size={30} /></ListItemIcon>
                         <ListItemText primary={"Anamnese"}></ListItemText>
                     </ListItem>
@@ -239,7 +240,7 @@ export default function PersistentDrawerLeft(props) {
             {is_doctor == 1 ?
               
                   <Route render={({ history }) => (
-                          <ListItem button onClick={() => history.push('/profile/' + id)}>
+                          <ListItem id="profile" button onClick={() => history.push('/profile/' + id)}>
                               <ListItemIcon><MdPerson size={30} /></ListItemIcon>
                               <ListItemText primary={"Perfil"}></ListItemText>
                           </ListItem>
@@ -256,7 +257,7 @@ export default function PersistentDrawerLeft(props) {
                   /> */}
 
                   <Route render={({ history }) => (
-                      <ListItem button onClick={() => history.push('/myprofile/' + id)}>
+                      <ListItem id="profile" button onClick={() => history.push('/myprofile/' + id)}>
                           <ListItemIcon><MdPerson size={30} /></ListItemIcon>
                           <ListItemText primary={"Perfil"}></ListItemText>
                       </ListItem>
@@ -268,7 +269,7 @@ export default function PersistentDrawerLeft(props) {
       
 
             <Route render={({ history }) => (
-                <ListItem button onClick={() => history.push('/FAQ/')}>
+                <ListItem id="FAQ" button onClick={() => history.push('/FAQ/')}>
                     <ListItemIcon><MdQuestionAnswer size={30} /></ListItemIcon>
                     <ListItemText primary={"FAQ"}></ListItemText>
                 </ListItem>
@@ -278,7 +279,7 @@ export default function PersistentDrawerLeft(props) {
         </List>
         <Divider />
         <List>
-            <ListItem button onClick={() => props.handleLogout()}>
+            <ListItem id="logout" button onClick={() => props.handleLogout()}>
                 <ListItemIcon><MdExitToApp size={30} /></ListItemIcon>
                 <ListItemText primary={"Sair"}></ListItemText>
             </ListItem>

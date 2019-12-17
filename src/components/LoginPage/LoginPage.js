@@ -165,7 +165,8 @@ class LoginPage extends React.Component {
                             {/* Ainda não é cadastrado? <a href="/signup">Clique aqui</a> */}
                             Ainda não é cadastrado?
                         </Typography>
-                        <Button className="submit"
+                        <Button 
+                            className="submit"
                             variant="contained"
                             color="primary"
                             fullWidth

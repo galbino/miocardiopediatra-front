@@ -297,12 +297,12 @@ class Anamnese extends React.Component {
                         </Button>               
                         <Typography variant="subtitle2" gutterBottom>Selecione o Paciente</Typography>
                         <ReactSelect
-                        
+                            id="select-paciente"
+                            name="select-paciente"
                             isSearchable
                             value={paciente}
                             options={listPacientes}
                             isLoading={isLoading}
-                            
                             onChange={(e) => this.handlePacienteChange(e)}
                             isClearable
                             noOptionsMessage={ () => "Nenhum paciente encontrado" }
@@ -312,6 +312,8 @@ class Anamnese extends React.Component {
                     <Paper style={{marginBottom: "1em"}} className="paper">
                         <Typography variant="subtitle2" gutterBottom>Selecione a Anamnese</Typography>
                         <ReactSelect
+                            id="select-anamnese"
+                            name="select-anamnese"
                             isSearchable
                             options={anamneses}
                             isLoading={isLoading}

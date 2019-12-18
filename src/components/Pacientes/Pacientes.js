@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Paper, Grid, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, CircularProgress, ListItemText, Avatar, IconButton } from '@material-ui/core';
 import { PacienteCard, Menu } from '../components';
 import NewPaciente from '../Pacientes/NewPaciente';
+import SnackBar from "../../utils/Snackbar";
 import { MdAdd, MdMoreVert } from 'react-icons/md';
 import Auth from '../../utils/Auth';
 import { Redirect } from 'react-router'
@@ -15,6 +16,9 @@ class Pacientes extends React.Component {
       listPacientes: [],
       openModal: false,
       loading: true,
+      displayMessage: "",
+      statusSnack: false,
+      variant: "",
     }
   }
 
@@ -38,9 +42,8 @@ class Pacientes extends React.Component {
 
   handleNewUser = (info) => {
       let array = this.state.listPacientes;
-      array.unshift({info});
-      console.log(array)
-      this.setState({ listPacientes: array, openModal: false });
+      array.unshift(info);
+      this.setState({ listPacientes: array, openModal: false, statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success" });
   }
 
   componentDidMount(){
@@ -63,9 +66,15 @@ class Pacientes extends React.Component {
 
     const content = (
       <React.Fragment>
+        <SnackBar
+            statusSnack={this.state.statusSnack}
+            closeSnack={this.handleClose}
+            displayMessage={this.state.displayMessage}
+            variant={this.state.variant}
+        />
         <Modal className="modal-paciente" open={openModal} onClose={this.handleCloseModalPaciente} closeAfterTransition >
             <Paper className="paper">
-                <NewPaciente />
+                <NewPaciente handleNewUser={this.handleNewUser} />
             </Paper>
         </Modal>
         

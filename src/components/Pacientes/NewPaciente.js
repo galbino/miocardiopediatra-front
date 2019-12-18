@@ -131,8 +131,8 @@ export default class NewPaciente extends React.Component {
         
         PostData("/signup", data).then(response => {
             if (response.errors.length === 0) {
-                this.props.handleNewUser(response.data); // back precisa mandar { dados cadastrais }
                 this.setState({  statusSnack: true, displayMessage: "Cadastrado com sucessso.", variant: "success", nome: "", email: "", emailResponsavel: "", cpfResponsavel: "", dataNascimento: "", altura: "", peso: "", sexo: "", estado: "", cidade: "", bairro: "", telefonePaciente: "", telefoneResponsavel: "", senha: "", confirmarSenha: "", observacoes: "" })
+                this.props.handleNewUser(response.data);
             } else {
                 this.setState({ statusSnack: true, displayMessage: response.errors[0].message, variant: "warning" })
             }
